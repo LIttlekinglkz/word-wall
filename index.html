@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -91,7 +90,6 @@ body::after {
     overflow: hidden;
 
     border: 2px solid #4b6cff;
-
     background:
         radial-gradient(
             circle at 78% 38%,
@@ -246,6 +244,24 @@ body::after {
     font-size: 14px;
 }
 
+
+/* =========================================================
+   ACTIVITY PREVIEW
+========================================================= */
+.activity-preview {
+    width: 470px;
+    max-width: calc(100vw - 150px);
+    margin: 22px 0 0 95px;
+    padding: 15px 18px;
+    border: 1px solid rgba(75,108,255,.28);
+    background: rgba(5,22,48,.58);
+}
+.preview-item { display:flex; align-items:center; gap:14px; }
+.preview-item > span { color:#54a9ff; font-size:11px; font-weight:900; letter-spacing:2px; min-width:22px; }
+.preview-item strong { display:block; font-size:12px; letter-spacing:1.5px; }
+.preview-item small { display:block; margin-top:4px; color:#8196b3; font-size:11px; line-height:1.4; }
+.preview-line { height:1px; margin:12px 0 12px 36px; background:rgba(75,108,255,.22); }
+@media (max-width:850px) { .activity-preview { width:auto; max-width:470px; margin-left:0; } }
 
 /* =========================================================
    AI ROBOT ILLUSTRATION
@@ -865,6 +881,74 @@ body::after {
     transform: translateY(-3px);
 }
 
+.category.selected {
+    border-color: #34d8ff;
+}
+
+
+/* WORD WALL LIGHT SYSTEM */
+.word-panel{box-shadow:0 18px 55px rgba(0,0,0,.24),inset 0 0 45px rgba(45,180,255,.018);}
+.word-panel::after{content:"";position:absolute;top:0;left:-20%;width:18%;height:2px;background:linear-gradient(90deg,transparent,#42dcff,transparent);box-shadow:0 0 14px rgba(66,220,255,.75);animation:wordScan 4.5s linear infinite;pointer-events:none;z-index:3;}
+@keyframes wordScan{0%{left:-20%;opacity:0}10%{opacity:.9}50%{opacity:1}90%{opacity:.9}100%{left:102%;opacity:0}}
+.panel-title-row h2{text-shadow:0 0 10px rgba(65,205,255,.12);}
+.word-tool{transition:.2s,box-shadow .25s}
+.word-tool:hover:not(:disabled){box-shadow:0 0 16px rgba(55,213,255,.16);}
+.word.placed-pop{animation:placedPop .32s ease-out;}
+@keyframes placedPop{0%{transform:scale(.94)}55%{transform:scale(1.05);box-shadow:0 0 22px rgba(52,216,255,.28)}100%{transform:scale(1)}}
+.category:not(.answer-checked-correct):not(.answer-checked-wrong):hover{border-color:rgba(52,216,255,.72);box-shadow:0 0 28px rgba(52,216,255,.08),inset 0 0 24px rgba(52,216,255,.025);}
+.progress-bar{box-shadow:0 0 10px rgba(40,216,255,.32);}
+
+
+/* PHASE LIGHTING — STRONGER BUT CONTROLLED */
+.word-panel{
+  position:relative;
+  box-shadow:0 18px 55px rgba(0,0,0,.24),0 0 28px rgba(52,216,255,.10),inset 0 0 55px rgba(45,180,255,.035);
+  transition:box-shadow .45s ease,filter .45s ease;
+}
+.word-panel::before{
+  content:"";position:absolute;inset:-2px;border:1px solid rgba(52,216,255,.16);
+  box-shadow:0 0 24px rgba(52,216,255,.08),inset 0 0 22px rgba(52,216,255,.025);
+  pointer-events:none;z-index:0;
+}
+.word-panel>*{position:relative;z-index:1;}
+.word-panel.word-ready{
+  box-shadow:0 18px 60px rgba(0,0,0,.26),0 0 42px rgba(52,216,255,.20),inset 0 0 75px rgba(52,216,255,.065);
+  animation:wordReadyPulse 1.15s ease-in-out 2;
+}
+@keyframes wordReadyPulse{0%,100%{filter:brightness(1)}50%{filter:brightness(1.10)}}
+
+/* Pressure Mode: the complete question table changes with the timer. */
+.pressure-play .scenario-card{
+  transition:background .3s ease,border-color .3s ease,box-shadow .3s ease,filter .3s ease;
+  box-shadow:0 0 0 1px rgba(84,169,255,.04),0 18px 55px rgba(0,0,0,.22),0 0 24px rgba(60,190,255,.08);
+}
+.pressure-play.pressure-warning .scenario-card{
+  border-color:rgba(255,195,77,.72);
+  box-shadow:0 0 0 1px rgba(255,195,77,.10),0 18px 55px rgba(0,0,0,.22),0 0 38px rgba(255,195,77,.18),inset 0 0 38px rgba(255,195,77,.035);
+}
+.pressure-play.pressure-warning.pressure-orange .scenario-card{
+  border-color:rgba(255,150,58,.88);
+  box-shadow:0 0 0 1px rgba(255,150,58,.14),0 18px 55px rgba(0,0,0,.22),0 0 46px rgba(255,150,58,.23),inset 0 0 46px rgba(255,150,58,.045);
+}
+.pressure-play.pressure-critical .scenario-card{
+  border-color:rgba(255,70,80,.92);
+  box-shadow:0 0 0 1px rgba(255,70,80,.18),0 18px 55px rgba(0,0,0,.24),0 0 58px rgba(255,45,60,.30),inset 0 0 55px rgba(255,45,60,.06);
+  animation:scenarioCriticalGlow .8s ease-in-out infinite alternate;
+}
+@keyframes scenarioCriticalGlow{from{filter:brightness(1)}to{filter:brightness(1.075)}}
+.pressure-play.critical-state .scenario-card{
+  border-color:#ff3d4f;
+  box-shadow:0 0 0 1px rgba(255,61,79,.24),0 18px 55px rgba(0,0,0,.25),0 0 75px rgba(255,30,48,.42),inset 0 0 70px rgba(255,30,48,.08);
+}
+
+
+#game.wordwall-ready .categories{
+  filter:brightness(1.035);
+}
+#game.wordwall-ready .category{
+  border-color:rgba(52,216,255,.42);
+  box-shadow:0 0 24px rgba(52,216,255,.11),inset 0 0 30px rgba(52,216,255,.025);
+}
 
 /* =========================================================
    CATEGORIES
@@ -934,6 +1018,23 @@ body::after {
     box-shadow:
         15px 0 #318cff,
         30px 0 #318cff;
+}
+
+
+.category.drag-over {
+    border-color: #34d8ff;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(15,65,105,.95),
+            rgba(5,25,48,.95)
+        );
+
+    transform: translateY(-4px);
+
+    box-shadow:
+        0 15px 40px rgba(0,140,255,.15);
 }
 
 .category.correct {
@@ -1019,7 +1120,7 @@ body::after {
 ========================================================= */
 
 .message {
-    min-height: 25px;
+    height: 25px;
 
     text-align: center;
 
@@ -1033,50 +1134,12 @@ body::after {
 
 
 /* =========================================================
-   CHECK ANSWERS BUTTON
-========================================================= */
-
-.check-button {
-    display: block;
-    margin: 25px auto 10px;
-
-    padding: 14px 30px;
-
-    border: 1px solid #5ca8ff;
-
-    background: #0c4eb4;
-
-    color: white;
-
-    font-weight: 800;
-    font-size: 12px;
-    letter-spacing: 2px;
-
-    cursor: pointer;
-
-    transition: .2s;
-
-    box-shadow:
-        0 10px 30px rgba(0,70,255,.25);
-}
-
-.check-button:hover {
-    background: #1768dd;
-    transform: translateY(-2px);
-}
-
-.check-button:active {
-    transform: scale(.97);
-}
-
-
-/* =========================================================
    RESET BUTTON
 ========================================================= */
 
 .reset {
     display: block;
-    margin: 10px auto;
+    margin: auto;
 
     padding: 10px 20px;
 
@@ -1269,7 +1332,6 @@ body::after {
 
 }
 
-
 @media (max-width: 500px) {
 
     .hero-title {
@@ -1289,6 +1351,779 @@ body::after {
         display: none;
     }
 
+}
+
+
+/* =========================================================
+   UPDATED INTERFACE / PHASE CONTROLS
+========================================================= */
+.phase-strip{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:15px;
+    margin:18px 0 6px;
+    padding:11px 15px;
+    border:1px solid rgba(84,147,255,.22);
+    background:rgba(8,27,53,.55);
+}
+.phase-strip .phase{
+    color:#5fc8ff;
+    font-size:10px;
+    font-weight:900;
+    letter-spacing:2px;
+}
+.phase-strip .hint{
+    color:#718aaa;
+    font-size:10px;
+    letter-spacing:1px;
+}
+.check-answers{
+    display:block;
+    margin:0 auto 10px;
+    padding:13px 28px;
+    color:white;
+    border:1px solid #55dfff;
+    background:#0d5bc7;
+    cursor:pointer;
+    font-size:12px;
+    font-weight:800;
+    letter-spacing:2px;
+    transition:.2s;
+}
+.check-answers:hover{
+    background:#1474e5;
+    transform:translateY(-2px);
+}
+.check-answers:disabled{
+    opacity:.55;
+    cursor:not-allowed;
+    transform:none;
+}
+.placed-word.answer-correct{
+    border-color:#30e28a !important;
+    background:rgba(48,226,138,.12) !important;
+    color:#73f3ae !important;
+}
+.placed-word.answer-wrong{
+    border-color:#ff4e67 !important;
+    background:rgba(255,78,103,.10) !important;
+    color:#ff8798 !important;
+}
+.category.answer-checked-correct{
+    border-color:#30e28a !important;
+    box-shadow:0 0 25px rgba(48,226,138,.14);
+}
+.category.answer-checked-wrong{
+    border-color:#ff4e67 !important;
+}
+.word.locked{
+    pointer-events:none;
+}
+
+/* WORD WALL REVIEW / COMPLETION ACTIONS */
+.completion-actions{
+    display:flex;
+    justify-content:center;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-top:20px;
+}
+.review-word-wall, .continue-pressure{
+    padding:12px 18px;
+    border:1px solid #3b78b9;
+    background:#0b2344;
+    color:#9ed6ff;
+    cursor:pointer;
+    font-size:11px;
+    font-weight:800;
+    letter-spacing:1.5px;
+}
+.review-word-wall:hover, .continue-pressure:hover{
+    background:#12345f;
+    transform:translateY(-1px);
+}
+.continue-pressure{
+    display:block;
+    margin:14px auto 0;
+    border-color:#55dfff;
+    background:#0d5bc7;
+    color:#fff;
+}
+
+/* =========================================================
+   PRESSURE MODE
+========================================================= */
+.pressure-mode{
+    display:none;
+    min-height:100vh;
+    padding:35px 20px 55px;
+    align-items:center;
+    justify-content:center;
+    position:relative;
+}
+.pressure-shell{
+    width:min(1050px,100%);
+    position:relative;
+}
+.pressure-instructions,
+.pressure-play,
+.pressure-result{
+    background:linear-gradient(145deg,rgba(10,31,61,.97),rgba(4,17,36,.98));
+    border:1px solid rgba(80,155,255,.35);
+    box-shadow:0 25px 80px rgba(0,0,0,.45);
+}
+.pressure-instructions{
+    padding:55px;
+    text-align:center;
+}
+.pressure-kicker{
+    color:#54a9ff;
+    font-size:11px;
+    font-weight:800;
+    letter-spacing:4px;
+}
+.pressure-instructions h1,
+.pressure-result h1{
+    font-size:clamp(42px,7vw,78px);
+    letter-spacing:-3px;
+    margin:12px 0 4px;
+}
+.pressure-subtitle{
+    color:#8fa9ca;
+    font-size:17px;
+    margin-bottom:30px;
+}
+.instruction-card{
+    max-width:700px;
+    margin:0 auto 28px;
+    text-align:left;
+    padding:25px 30px;
+    background:rgba(5,21,43,.8);
+    border:1px solid rgba(80,150,255,.2);
+}
+.instruction-card h2{
+    font-size:14px;
+    letter-spacing:3px;
+    margin-bottom:16px;
+}
+.instruction-card ol{
+    color:#a9bdd8;
+    line-height:1.9;
+    padding-left:22px;
+    font-size:13px;
+}
+.instruction-card strong{color:white}
+.warning-line{
+    margin-top:20px;
+    padding:12px;
+    border-left:3px solid #ffbf3f;
+    color:#ffd778;
+    background:rgba(255,190,60,.06);
+    font-size:12px;
+}
+.pressure-start{
+    padding:15px 34px;
+    border:1px solid #61c8ff;
+    background:#0d5bc7;
+    color:white;
+    font-size:13px;
+    font-weight:900;
+    letter-spacing:2px;
+    cursor:pointer;
+    transition:.2s;
+}
+.pressure-start:hover{
+    background:#1474e5;
+    transform:translateY(-2px);
+}
+.pressure-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:18px 20px;
+    background:rgba(7,25,50,.9);
+    border:1px solid rgba(80,150,255,.2);
+}
+.round-label{
+    margin-top:5px;
+    color:#dceaff;
+    font-weight:800;
+    letter-spacing:2px;
+    font-size:13px;
+}
+.pressure-score-box{
+    text-align:center;
+    border-left:1px solid #28466e;
+    padding-left:25px;
+}
+.pressure-score-box span{
+    display:block;
+    color:#6e88aa;
+    font-size:9px;
+    letter-spacing:2px;
+}
+.pressure-score-box strong{
+    display:block;
+    color:#54d9ff;
+    font-size:27px;
+    margin-top:3px;
+}
+.pressure-progress{
+    height:5px;
+    background:#0a1e39;
+}
+#pressureProgressBar{
+    height:100%;
+    width:0;
+    background:linear-gradient(90deg,#2563eb,#28d8ff);
+    transition:.3s;
+}
+.alert-zone{
+    min-height:34px;
+    padding:8px 12px;
+    text-align:center;
+    color:#5ed8ff;
+    font-size:11px;
+    font-weight:900;
+    letter-spacing:2px;
+    border-top:1px solid rgba(84,169,255,.12);
+    border-bottom:1px solid rgba(84,169,255,.12);
+    background:rgba(4,17,34,.72);
+    transition:.15s;
+}
+.alert-zone.alert-warning{color:#ffc34d;border-color:rgba(255,195,77,.3);}
+.alert-zone.alert-critical{color:#ff526b;border-color:rgba(255,82,107,.4);animation:alertPulse .45s infinite alternate;}
+.alert-zone.alert-pop{transform:scale(1.025);}
+@keyframes alertPulse{from{opacity:.65}to{opacity:1}}
+.timer-wrap{
+    text-align:center;
+    margin:12px auto 18px;
+    max-width:600px;
+}
+.timer-number{
+    font-size:clamp(68px,9vw,104px);
+    line-height:1;
+    font-weight:900;
+    color:#5ed8ff;
+    text-shadow:0 0 25px rgba(70,210,255,.25);
+    transition:color .12s,text-shadow .12s,transform .12s;
+}
+.timer-number.warning{color:#ffc34d;text-shadow:0 0 28px rgba(255,195,77,.35);}
+.timer-number.critical{color:#ff526b;text-shadow:0 0 32px rgba(255,82,107,.55);animation:timerPulse .35s infinite alternate;}
+.timer-number.timeout{color:#ff526b;transform:scale(1.08);}
+@keyframes timerPulse{from{transform:scale(1)}to{transform:scale(1.055)}}
+.timer-track{
+    height:7px;
+    background:#0a203c;
+    margin:8px 0;
+}
+#timerBar{
+    height:100%;
+    width:100%;
+    background:#39d7ff;
+    transition:width .1s linear,background .12s;
+}
+#timerBar.warning{background:#ffc34d;}
+#timerBar.critical{background:#ff526b;box-shadow:0 0 12px rgba(255,82,107,.65);}
+#timerBar.timeout{background:#ff526b;}
+.timer-status{
+    color:#7892b5;
+    font-size:10px;
+    letter-spacing:2px;
+    font-weight:800;
+}
+.scenario-card{
+    max-width:900px;
+    margin:auto;
+    padding:35px;
+    position:relative;
+    box-shadow:0 0 0 1px rgba(84,169,255,.04),0 18px 55px rgba(0,0,0,.22);
+    background:rgba(8,27,53,.9);
+    border:1px solid rgba(90,160,255,.28);
+}
+.scenario-tag{
+    color:#54a9ff;
+    font-size:9px;
+    letter-spacing:3px;
+    font-weight:800;
+    margin-bottom:15px;
+}
+.scenario-card h2{
+    font-size:clamp(21px,3vw,31px);
+    line-height:1.25;
+    margin-bottom:25px;
+}
+.answers{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+}
+.answer-button{
+    min-height:72px;
+    padding:14px 16px;
+    text-align:left;
+    border:1px solid #284c7b;
+    background:#0b2344;
+    color:#d9e8fb;
+    cursor:pointer;
+    font-size:12px;
+    line-height:1.45;
+    transition:.15s;
+}
+.answer-button span{
+    display:inline-flex;
+    width:26px;
+    height:26px;
+    align-items:center;
+    justify-content:center;
+    margin-right:10px;
+    border:1px solid #4c83bd;
+    color:#63cfff;
+    font-weight:900;
+}
+.answer-button:hover:not(:disabled){
+    border-color:#52cfff;
+    background:#10315b;
+    transform:translateY(-2px);
+    box-shadow:0 0 18px rgba(82,207,255,.12);
+}
+.answer-button:disabled{cursor:default}
+.answer-button.answer-good{
+    border-color:#35e69a;
+    background:rgba(53,230,154,.12);
+    color:#8affc5;
+}
+.answer-button.answer-bad{
+    border-color:#ff526b;
+    background:rgba(255,82,107,.12);
+    color:#ff9baa;
+}
+.chaos-note{
+    min-height:25px;
+    text-align:center;
+    color:#ffbd59;
+    font-size:9px;
+    letter-spacing:2px;
+    font-weight:800;
+    margin-top:12px;
+}
+
+/* PRESSURE CHAOS + AUDIO */
+.pressure-play{position:relative;overflow:hidden;background:linear-gradient(145deg,rgba(7,24,48,.96),rgba(3,12,26,.98));}
+.pressure-play::before,.pressure-play::after{content:"";position:absolute;top:50%;width:260px;height:520px;transform:translateY(-50%);pointer-events:none;z-index:0;opacity:.055;filter:blur(18px);background:radial-gradient(ellipse at center,rgba(255,30,48,.9) 0%,rgba(255,30,48,.34) 32%,rgba(255,30,48,.08) 62%,transparent 78%);animation:playBeacon 2.8s ease-in-out infinite;}
+.pressure-play::before{left:-150px;}
+.pressure-play::after{right:-150px;animation-delay:1.4s;}
+.pressure-play>*{position:relative;z-index:1;}
+.pressure-play.pressure-warning::before,.pressure-play.pressure-warning::after{opacity:.12;animation-duration:2.2s;}
+.pressure-play.pressure-critical::before,.pressure-play.pressure-critical::after{opacity:.24;animation-duration:1.05s;}
+@keyframes playBeacon{0%,100%{transform:translateY(-50%) scale(.9);opacity:.055}45%{transform:translateY(-50%) scale(1);opacity:.08}52%{transform:translateY(-50%) scale(1.05);opacity:.13}60%{transform:translateY(-50%) scale(.98);opacity:.07}}
+.pressure-side-alert{
+    position:absolute;
+    top:50%;
+    width:180px;
+    min-height:42px;
+    padding:11px 13px;
+    box-sizing:border-box;
+    border:1px solid rgba(82,207,255,.45);
+    background:rgba(3,16,34,.96);
+    color:#67d8ff;
+    font-size:8px;
+    font-weight:900;
+    letter-spacing:1.5px;
+    line-height:1.35;
+    text-align:center;
+    opacity:0;
+    pointer-events:none;
+    z-index:5;
+    box-shadow:0 0 22px rgba(82,207,255,.12);
+}
+.pressure-side-alert.left{left:10px;right:auto;top:50%;transform:translate(-22px,-50%);}
+.pressure-side-alert.right{right:10px;left:auto;top:50%;transform:translate(22px,-50%);}
+.pressure-side-alert.corner-tl{left:12px;right:auto;top:86px;transform:translate(-22px,-12px);}
+.pressure-side-alert.corner-tr{right:12px;left:auto;top:86px;transform:translate(22px,-12px);}
+.pressure-side-alert.corner-bl{left:12px;right:auto;top:auto;bottom:54px;transform:translate(-22px,12px);}
+.pressure-side-alert.corner-br{right:12px;left:auto;top:auto;bottom:54px;transform:translate(22px,12px);}
+.pressure-side-alert.show.left{animation:sideAlertLeft .78s cubic-bezier(.2,.8,.2,1) forwards;}
+.pressure-side-alert.show.right{animation:sideAlertRight .78s cubic-bezier(.2,.8,.2,1) forwards;}
+.pressure-side-alert.show.corner-tl{animation:cornerTL .9s cubic-bezier(.2,.8,.2,1) forwards;}
+.pressure-side-alert.show.corner-tr{animation:cornerTR .9s cubic-bezier(.2,.8,.2,1) forwards;}
+.pressure-side-alert.show.corner-bl{animation:cornerBL .9s cubic-bezier(.2,.8,.2,1) forwards;}
+.pressure-side-alert.show.corner-br{animation:cornerBR .9s cubic-bezier(.2,.8,.2,1) forwards;}
+.pressure-side-alert.warning{border-color:#ffbd59;color:#ffd27d;box-shadow:0 0 24px rgba(255,189,89,.18);}
+.pressure-side-alert.critical{border-color:#ff526b;color:#ff8194;box-shadow:0 0 28px rgba(255,82,107,.22);}
+@keyframes sideAlertLeft{0%{opacity:0;transform:translate(-32px,-50%)}18%{opacity:1;transform:translate(0,-50%)}78%{opacity:1;transform:translate(0,-50%)}100%{opacity:0;transform:translate(-16px,-50%)}}
+@keyframes sideAlertRight{0%{opacity:0;transform:translate(32px,-50%)}18%{opacity:1;transform:translate(0,-50%)}78%{opacity:1;transform:translate(0,-50%)}100%{opacity:0;transform:translate(16px,-50%)}}
+@keyframes cornerTL{0%{opacity:0;transform:translate(-28px,-14px)}18%{opacity:1;transform:translate(0,0)}76%{opacity:1;transform:translate(0,0)}100%{opacity:0;transform:translate(-10px,-4px)}}
+@keyframes cornerTR{0%{opacity:0;transform:translate(28px,-14px)}18%{opacity:1;transform:translate(0,0)}76%{opacity:1;transform:translate(0,0)}100%{opacity:0;transform:translate(10px,-4px)}}
+@keyframes cornerBL{0%{opacity:0;transform:translate(-28px,14px)}18%{opacity:1;transform:translate(0,0)}76%{opacity:1;transform:translate(0,0)}100%{opacity:0;transform:translate(-10px,4px)}}
+@keyframes cornerBR{0%{opacity:0;transform:translate(28px,14px)}18%{opacity:1;transform:translate(0,0)}76%{opacity:1;transform:translate(0,0)}100%{opacity:0;transform:translate(10px,4px)}}
+.pressure-play.easy-shake{animation:easyShake .18s linear 2;}
+@keyframes easyShake{0%{transform:translateX(0)}20%{transform:translateX(-3px)}40%{transform:translateX(3px)}60%{transform:translateX(-2px)}80%{transform:translateX(2px)}100%{transform:translateX(0)}}
+.sound-toggle{
+    position:static;
+    display:block;
+    margin-top:7px;
+    margin-left:auto;
+    border:1px solid rgba(82,207,255,.4);
+    background:rgba(4,19,39,.9);
+    color:#72d9ff;
+    padding:6px 9px;
+    font:800 8px/1 Arial,sans-serif;
+    letter-spacing:1.5px;
+    cursor:pointer;
+    white-space:nowrap;
+}
+.sound-toggle:hover{background:#10315b;}
+@media(max-width:1100px){.pressure-side-alert{display:block;width:150px}.pressure-play.easy-shake{animation-duration:.16s}}
+@media(max-width:700px){.pressure-side-alert{width:145px;font-size:7px}.pressure-side-alert.corner-tl,.pressure-side-alert.corner-tr{top:86px}.pressure-side-alert.corner-bl,.pressure-side-alert.corner-br{bottom:48px}.sound-toggle{padding:6px 8px;font-size:7px}}
+.pressure-play{position:relative;}
+.pressure-play::before{
+    content:"PRESSURE ACTIVE";
+    position:fixed;
+    top:50%;
+    left:12px;
+    transform:rotate(-90deg) translateX(-50%);
+    transform-origin:left top;
+    color:rgba(255,82,107,.22);
+    font-size:9px;
+    font-weight:900;
+    letter-spacing:4px;
+    pointer-events:none;
+}
+.pressure-play.critical-state{box-shadow:inset 0 0 70px rgba(255,40,65,.07);}
+.impact-flash{animation:impactFlash .22s ease-out;}
+@keyframes impactFlash{0%{filter:brightness(1.35)}100%{filter:brightness(1)}}
+.pressure-result{
+    display:none;
+    padding:60px 30px;
+    text-align:center;
+}
+.pressure-final-score{
+    font-size:82px;
+    font-weight:900;
+    color:#54d9ff;
+    margin:12px;
+}
+.pressure-result p{
+    color:#8ea7c6;
+    font-size:13px;
+    margin:0 auto 25px;
+}
+@media(max-width:700px){
+    .completion-actions{flex-direction:column;align-items:stretch}
+    .review-word-wall,.play-again{width:100%}
+    .pressure-instructions{padding:35px 20px}
+    .answers{grid-template-columns:1fr}
+    .scenario-card{padding:22px}
+    .pressure-instructions h1,
+    .pressure-result h1{letter-spacing:-2px}
+    .timer-number{font-size:55px}
+    .phase-strip{align-items:flex-start;flex-direction:column}
+}
+
+
+/* =========================================================
+   FINAL START SCREEN LAYOUT FIX
+========================================================= */
+.start-screen{
+    min-height:100vh;
+    padding:18px;
+    box-sizing:border-box;
+}
+.start-frame{
+    min-height:92vh;
+    height:auto;
+    box-sizing:border-box;
+}
+.hero{
+    min-height:72vh;
+    padding:90px 70px 210px 80px;
+    box-sizing:border-box;
+}
+.hero-description{
+    max-width:430px;
+    font-size:13px;
+}
+.activity-preview{
+    position:absolute;
+    left:80px;
+    bottom:82px;
+    width:min(590px, calc(100% - 350px));
+    max-width:none;
+    margin:0;
+    padding:10px 14px;
+    display:grid;
+    grid-template-columns:1fr 1px 1fr;
+    align-items:center;
+    gap:14px;
+    box-sizing:border-box;
+    z-index:8;
+}
+.preview-line{
+    width:1px;
+    height:42px;
+    margin:0;
+}
+.preview-item{min-width:0;}
+.preview-item small{font-size:10px;}
+.start-button{
+    left:auto;
+    right:80px;
+    bottom:92px;
+}
+.hero-footer{
+    left:80px;
+    right:80px;
+    bottom:25px;
+}
+@media(max-width:850px){
+    .hero{
+        min-height:auto;
+        padding:85px 35px 180px;
+        grid-template-columns:1fr;
+    }
+    .robot-area{min-height:300px;}
+    .activity-preview{
+        left:35px;
+        right:35px;
+        bottom:88px;
+        width:auto;
+    }
+    .start-button{
+        right:35px;
+        bottom:30px;
+    }
+    .hero-footer{display:none;}
+}
+@media(max-width:600px){
+    .activity-preview{
+        position:relative;
+        left:auto;
+        right:auto;
+        bottom:auto;
+        margin:10px 0 0;
+        grid-template-columns:1fr;
+    }
+    .preview-line{width:100%;height:1px;}
+    .start-button{
+        position:relative;
+        right:auto;
+        bottom:auto;
+        margin:18px 0 0 0;
+    }
+    .hero{padding-bottom:40px;}
+}
+
+/* CHECK ANSWERS CONTROL */
+.check-area{
+    text-align:center;
+    margin-top:8px;
+}
+.check-answers{
+    margin:0 auto 2px;
+}
+.message{
+    margin:8px 0 14px;
+}
+
+
+/* FINAL REPORT + PRESSURE BRIEFING */
+.pressure-instructions{position:relative;overflow:hidden;background:linear-gradient(145deg,rgba(7,12,24,.98),rgba(13,20,36,.96));border:1px solid rgba(84,196,255,.35);box-shadow:0 0 0 1px rgba(84,196,255,.05),0 24px 70px rgba(0,0,0,.45),inset 0 0 70px rgba(31,132,255,.06)}
+.pressure-instructions:before{content:"";position:absolute;inset:0;background:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:28px 28px;pointer-events:none;mask-image:linear-gradient(to bottom,black,transparent)}
+.pressure-instructions>*{position:relative;z-index:1}.pressure-subtitle{letter-spacing:.14em;font-weight:800;color:#8fe7ff!important}.instruction-status{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 16px}.instruction-status span{padding:7px 10px;border:1px solid rgba(95,220,255,.25);background:rgba(29,177,220,.07);font-size:10px;letter-spacing:.09em;color:#a9dff0;font-weight:800}.instruction-status span:first-child{color:#8dffbf;border-color:rgba(83,255,161,.3);background:rgba(83,255,161,.06)}.instruction-card{background:rgba(2,7,18,.72)!important;border-color:rgba(84,196,255,.25)!important}.warning-line{border-left:3px solid #ffb84d!important;background:rgba(255,184,77,.07)!important;color:#ffd58c!important}
+.final-report{width:min(980px,94vw);margin:0 auto;padding:30px 22px 46px;box-sizing:border-box;background:radial-gradient(circle at 50% 0%,rgba(53,196,255,.1),transparent 34%),#080d19;border:1px solid rgba(84,196,255,.28);box-shadow:0 30px 90px rgba(0,0,0,.5)}.final-report-head{text-align:center;padding:8px 0 20px}.final-report-head .report-icon{font-size:32px;color:#77ddff;text-shadow:0 0 20px rgba(119,221,255,.65);margin:8px 0}.final-report-head h1{margin:4px 0 6px;letter-spacing:.08em}.final-report-head p{margin:0;color:#7f9aaa;font-size:11px;letter-spacing:.15em}.overall-score-card{margin:12px auto 14px;max-width:560px;text-align:center;padding:24px 18px;border:1px solid rgba(83,220,255,.35);background:linear-gradient(135deg,rgba(24,73,100,.24),rgba(8,15,29,.9));box-shadow:inset 0 0 35px rgba(54,180,255,.06)}.score-label{font-size:11px;letter-spacing:.18em;color:#8ca7b7;font-weight:800}.overall-score{font-size:68px;line-height:1;font-weight:950;color:#e8fbff;text-shadow:0 0 28px rgba(76,213,255,.28);margin:8px 0}.overall-score small{font-size:24px;color:#6d8998}.overall-percent{font-size:12px;letter-spacing:.16em;color:#77e6ff;font-weight:900}.score-toggle{width:100%;margin:0 0 8px;padding:13px;border:1px solid rgba(104,209,255,.28);background:rgba(27,73,98,.22);color:#a9eaff;font-weight:900;letter-spacing:.08em;cursor:pointer}.score-details{max-height:0;overflow:hidden;transition:max-height .35s ease,opacity .25s ease;opacity:0;border:0}.score-details.open{max-height:300px;opacity:1;border:1px solid rgba(104,209,255,.18);margin-bottom:24px}.score-row{display:flex;justify-content:space-between;gap:16px;padding:14px 16px;border-bottom:1px solid rgba(255,255,255,.07);font-size:12px;letter-spacing:.05em;color:#9db3c0}.score-row strong{color:#eafaff}.score-row.total{border-bottom:0;background:rgba(90,210,255,.07);color:#bcefff}.score-row.total strong{color:#78e5ff}.answer-review-heading{text-align:left;border-top:1px solid rgba(255,255,255,.08);padding:26px 0 16px}.answer-review-heading h2{margin:4px 0;font-size:25px}.answer-review-heading p{margin:0;color:#78909d;font-size:12px}.review-section{margin-top:22px}.review-section-title{display:flex;align-items:baseline;gap:10px;border-left:3px solid #68dfff;padding-left:11px;margin-bottom:12px}.review-section-title span{font-size:10px;color:#72dfff;letter-spacing:.15em;font-weight:900}.review-section-title strong{font-size:15px;letter-spacing:.08em}.review-list{display:grid;gap:12px}.review-card,.question-review{padding:18px;border:1px solid rgba(255,255,255,.09);background:rgba(255,255,255,.025);position:relative;overflow:hidden}.review-card:before,.question-review:before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:#4adfff}.review-wrong:before{background:#ff5f6d}.review-number{font-size:9px;letter-spacing:.16em;color:#708795;font-weight:900;margin-bottom:8px}.review-card h3,.question-review h3{margin:0 0 12px;font-size:15px;line-height:1.45;color:#edfaff}.review-answer{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;padding:11px 12px;margin-top:7px;border:1px solid rgba(255,255,255,.07);background:rgba(0,0,0,.2)}.review-answer span{font-size:9px;letter-spacing:.1em;font-weight:900;white-space:nowrap}.review-answer strong{font-size:12px;line-height:1.4;text-align:right}.review-answer.green{border-color:rgba(76,255,157,.22);background:rgba(76,255,157,.055)}.review-answer.green span{color:#76ffb0}.review-answer.green strong{color:#baffd4}.review-answer.red{border-color:rgba(255,86,102,.24);background:rgba(255,86,102,.055)}.review-answer.red span{color:#ff7784}.review-answer.red strong{color:#ffc1c7}.review-result{display:inline-block;margin-top:10px;padding:5px 8px;font-size:9px;font-weight:950;letter-spacing:.1em}.review-result.ok{color:#78ffb0;background:rgba(76,255,157,.08)}.review-result.bad{color:#ff8490;background:rgba(255,86,102,.08)}.final-actions{text-align:center;margin-top:30px}@media(max-width:650px){.instruction-status{display:grid;grid-template-columns:1fr}.overall-score{font-size:54px}.review-answer{display:block}.review-answer strong{display:block;text-align:left;margin-top:5px}.final-report{padding-left:14px;padding-right:14px}}
+
+/* WORD WALL INTERACTIVE EXTRAS + FINAL CATEGORY REVIEW */
+.panel-title-row{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.word-tools{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.word-tool{border:1px solid rgba(111,224,255,.32);background:rgba(111,224,255,.06);color:#dff9ff;padding:8px 11px;border-radius:8px;font-weight:900;letter-spacing:.07em;font-size:10px;cursor:pointer;transition:.2s}
+.word-tool:hover{background:rgba(111,224,255,.14);transform:translateY(-1px)}
+.word-tool:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.tool-status{font-size:10px;letter-spacing:.05em;color:#a9c4d8;white-space:nowrap}
+.placed-word{cursor:pointer;transition:.18s}
+.placed-word:hover{transform:translateY(-1px);filter:brightness(1.12)}
+.word.pop-in{animation:wordPop .28s ease}
+@keyframes wordPop{0%{transform:scale(.9);opacity:.2}100%{transform:scale(1);opacity:1}}
+.word-wall-review{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:18px;align-items:start}
+.category-review-title{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}
+.category-review-title strong{font-size:15px;letter-spacing:.08em}
+.category-review-title span{font-size:9px;letter-spacing:.16em;opacity:.6}
+.category-review-table{width:100%;border-collapse:separate;border-spacing:0;overflow:hidden;border:1px solid rgba(255,255,255,.1);border-radius:12px;background:rgba(255,255,255,.025)}
+.category-review-table th,.category-review-table td{padding:11px 13px;text-align:left;border-bottom:1px solid rgba(255,255,255,.07)}
+.category-review-table th{font-size:9px;letter-spacing:.14em;color:#9eeeff;background:rgba(111,224,255,.055)}
+.category-review-table td{font-size:13px}
+.category-review-table tr:last-child td{border-bottom:0}
+.category-review-table .match{color:#78ffb0;font-weight:850}
+.category-review-table .mismatch{color:#ff8490;font-weight:850}
+.category-review-table .your-correct{color:#78ffb0;font-weight:900}
+.category-review-table .your-wrong{color:#ff8490;font-weight:900}
+.review-table-label{font-size:9px;letter-spacing:.15em;margin:16px 0 7px;opacity:.65}
+@media(max-width:850px){.word-wall-review{grid-template-columns:1fr}.category-review-table th,.category-review-table td{padding:9px;font-size:11px}.panel-title-row{align-items:flex-start}.word-tools{width:auto}.word-tool{min-width:0}}
+
+/* =========================================================
+   PRESSURE MODE • MISSION BRIEFING
+========================================================= */
+.pressure-instructions{
+    position:relative;
+    overflow:hidden;
+    min-height:500px;
+    padding:38px 42px 42px;
+    background:
+        radial-gradient(circle at 50% 42%,rgba(255,154,0,.07),transparent 38%),
+        linear-gradient(145deg,#090b0f,#030405 72%);
+    border:1px solid rgba(255,169,35,.48);
+    box-shadow:0 25px 80px rgba(0,0,0,.7),inset 0 0 70px rgba(255,145,0,.035);
+}
+.pressure-instructions::before,
+.pressure-instructions::after{
+    content:"";
+    position:absolute;
+    left:12px;
+    right:12px;
+    height:18px;
+    z-index:5;
+    pointer-events:none;
+    background:repeating-linear-gradient(-45deg,#050505 0 14px,#050505 14px 24px,#f5b400 24px 38px,#f5b400 38px 48px);
+    border:1px solid rgba(255,191,0,.65);
+    box-shadow:0 0 12px rgba(255,174,0,.18);
+    background-size:68px 68px;
+    animation:hazardMove 2.2s linear infinite;
+}
+.pressure-instructions::before{top:0}
+.pressure-instructions::after{bottom:0}
+.mission-tape{display:none}
+@keyframes hazardMove{to{background-position:68px 0}}
+.mission-red-light{
+    position:absolute;
+    top:50%;
+    width:150px;
+    height:330px;
+    transform:translateY(-50%);
+    background:radial-gradient(ellipse at center,rgba(255,28,43,.78) 0%,rgba(255,28,43,.42) 22%,rgba(255,28,43,.18) 48%,rgba(255,28,43,.05) 70%,transparent 78%);
+    filter:blur(7px);
+    opacity:.24;
+    pointer-events:none;
+    animation:missionRedFlash 1.7s ease-in-out infinite;
+    z-index:0;
+}
+.mission-red-light::after{
+    content:"";
+    position:absolute;
+    left:50%;
+    top:50%;
+    width:18px;
+    height:18px;
+    transform:translate(-50%,-50%);
+    border-radius:50%;
+    background:#ff3144;
+    box-shadow:0 0 12px #ff3144,0 0 34px #ff2638,0 0 75px rgba(255,38,56,.9);
+}
+.mission-red-light-left{left:-68px}
+.mission-red-light-right{right:-68px}
+@keyframes missionRedFlash{
+    0%,100%{opacity:.16;filter:blur(10px);transform:translateY(-50%) scale(.92)}
+    38%{opacity:.3;filter:blur(7px);transform:translateY(-50%) scale(1)}
+    46%{opacity:.62;filter:blur(5px);transform:translateY(-50%) scale(1.045)}
+    53%{opacity:.28;filter:blur(8px);transform:translateY(-50%) scale(1.01)}
+    100%{opacity:.16;filter:blur(10px);transform:translateY(-50%) scale(.92)}
+}
+.pressure-instructions .pressure-kicker{
+    position:relative;
+    z-index:6;
+    color:#ffae18;
+    letter-spacing:3px;
+}
+.mission-title{
+    position:relative;
+    z-index:6;
+    margin:12px 0 0!important;
+    color:#ffae18;
+    text-shadow:0 0 10px rgba(255,151,0,.3);
+    animation:missionBeat 1.25s ease-in-out infinite;
+}
+@keyframes missionBeat{0%,100%{transform:scale(1);text-shadow:0 0 8px rgba(255,151,0,.22)}45%{transform:scale(1.025);text-shadow:0 0 24px rgba(255,102,0,.65)}55%{transform:scale(1.012);text-shadow:0 0 13px rgba(255,151,0,.38)}}
+.pressure-instructions .pressure-subtitle{
+    position:relative;
+    z-index:6;
+    color:#b77920;
+    font-size:11px;
+    letter-spacing:3px;
+    margin:5px 0 22px;
+}
+.mission-card{
+    position:relative;
+    z-index:6;
+    max-width:620px;
+    margin:0 auto 20px;
+    padding:20px 22px;
+    background:rgba(4,5,7,.9);
+    border:1px solid rgba(255,171,25,.55);
+    box-shadow:inset 0 0 30px rgba(255,154,0,.025);
+}
+.mission-card::before{
+    content:"";
+    position:absolute;
+    inset:5px;
+    border:1px solid rgba(255,171,25,.12);
+    pointer-events:none;
+}
+.mission-card-top{
+    display:flex;
+    justify-content:space-between;
+    color:#ffb21c;
+    font-size:10px;
+    font-weight:900;
+    letter-spacing:2px;
+    margin-bottom:12px;
+}
+.mission-card h2{
+    color:#f0f0f0;
+    font-size:clamp(18px,3vw,27px);
+    line-height:1.15;
+    letter-spacing:1px;
+    margin:0 0 17px;
+}
+.mission-stats{
+    display:flex;
+    justify-content:space-between;
+    gap:12px;
+    border-top:1px solid rgba(255,171,25,.18);
+    border-bottom:1px solid rgba(255,171,25,.18);
+    padding:12px 0;
+    color:#9e9e9e;
+    font-size:9px;
+    font-weight:800;
+    letter-spacing:1.5px;
+}
+.mission-stats span{display:flex;align-items:center;gap:6px}
+.mission-stats b{color:#ffb21c;font-size:12px}
+.mission-card .warning-line{
+    margin-top:12px;
+    padding:8px 10px;
+    border-left:2px solid #ff2638;
+    color:#ff6671;
+    background:rgba(255,38,56,.055);
+    font-size:9px;
+    letter-spacing:1px;
+}
+.pressure-instructions .pressure-start{
+    position:relative;
+    z-index:6;
+    border-color:#ffae18;
+    background:#101010;
+    color:#ffb21c;
+    box-shadow:0 0 0 rgba(255,174,24,0);
+}
+.pressure-instructions .pressure-start:hover{
+    background:#ffae18;
+    color:#050505;
+    box-shadow:0 0 24px rgba(255,174,24,.35);
+}
+@media(max-width:650px){
+    .pressure-instructions{padding:32px 20px 38px;min-height:460px}
+    .mission-stats{flex-direction:column;align-items:center}
+    .mission-red-light{width:110px;height:260px;top:50%;bottom:auto}.mission-red-light-left{left:-55px}.mission-red-light-right{right:-55px}
 }
 
 </style>
@@ -1328,6 +2163,7 @@ body::after {
                     THE
                     <span class="outline">ETHICS</span>
                     <br>
+
                     OF
                     <span class="blue">AI</span>
 
@@ -1345,10 +2181,10 @@ body::after {
 
                 <p class="hero-description">
 
-                    Test your understanding of artificial intelligence
-                    through an interactive Word Wall activity.
-                    Explore privacy, fairness, accountability,
-                    misinformation, and the social impact of AI.
+                    Test your understanding of responsible and ethical AI
+                    through two interactive challenges. Start with
+                    the Word Wall, then take on Pressure Mode
+                    to apply what you learned under time pressure.
 
                 </p>
 
@@ -1406,9 +2242,25 @@ body::after {
 
         <button class="start-button" onclick="startGame()">
 
-            ENTER ACTIVITY →
+            START CHALLENGE →
 
         </button>
+
+        <div class="activity-preview">
+
+            <div class="preview-item">
+                <span>01</span>
+                <div><strong>WORD WALL</strong><small>Match the concepts first.</small></div>
+            </div>
+
+            <div class="preview-line"></div>
+
+            <div class="preview-item">
+                <span>02</span>
+                <div><strong>PRESSURE MODE ⚡</strong><small>Apply what you learned under time pressure.</small></div>
+            </div>
+
+        </div>
 
 
         <!-- FOOTER -->
@@ -1417,15 +2269,15 @@ body::after {
 
             <div class="footer-text">
 
-                <span>ACTIVITY</span>
+                <span>ACTIVITIES</span>
 
-                <strong>AI ETHICS WORD WALL</strong>
+                <strong>01 • WORD WALL &nbsp;&nbsp; / &nbsp;&nbsp; 02 • PRESSURE MODE</strong>
 
             </div>
 
             <div class="footer-right">
 
-                SCHOOL LEARNING ACTIVITY • 01
+                AI ETHICS CHALLENGE • 01 — 02
 
             </div>
 
@@ -1459,7 +2311,7 @@ body::after {
             </h1>
 
             <p>
-                Place every word into a category, then check your answers.
+                Click a word, then click the category where it belongs.
             </p>
 
         </div>
@@ -1480,10 +2332,10 @@ body::after {
 
             <div class="stat">
 
-                <small>PLACED</small>
+                <small>REMAINING</small>
 
                 <strong id="remaining">
-                    0
+                    12
                 </strong>
 
             </div>
@@ -1492,6 +2344,10 @@ body::after {
 
     </header>
 
+    <div class="phase-strip">
+        <span class="phase">PHASE 01 • WORD WALL</span>
+        <span class="hint">PLACE ALL CONCEPTS FIRST • CHECK ONLY WHEN READY</span>
+    </div>
 
     <!-- PROGRESS -->
 
@@ -1525,16 +2381,23 @@ body::after {
 
         <div class="panel-heading">
 
-            <h2>
-                WORD BANK
-            </h2>
+            <div class="panel-title-row">
+                <h2>
+                    WORD BANK
+                </h2>
+
+                <div class="word-tools">
+                    <button type="button" class="word-tool" id="shuffleWordsButton" onclick="shuffleUnplacedWords()">↻ SHUFFLE WORDS</button>
+                    <button type="button" class="word-tool" id="undoWordButton" onclick="undoLastPlacement()" disabled>↶ UNDO LAST</button>
+                    <span class="tool-status" id="wordToolStatus">12 CONCEPTS IN PLAY</span>
+                </div>
+            </div>
 
             <span>
-                Select a concept, then choose a category ↓
+                Click a concept, then choose a category ↓
             </span>
 
         </div>
-
 
         <div class="words" id="wordBank">
 
@@ -1542,72 +2405,84 @@ body::after {
             <!-- RANDOMIZED BY JAVASCRIPT -->
 
             <div class="word"
+                
                  data-category="social">
                 Social Impact
             </div>
 
 
             <div class="word"
+                
                  data-category="responsible">
                 Privacy
             </div>
 
 
             <div class="word"
+                
                  data-category="ethical">
                 Bias
             </div>
 
 
             <div class="word"
+                
                  data-category="social">
                 Education
             </div>
 
 
             <div class="word"
+                
                  data-category="responsible">
                 Accountability
             </div>
 
 
             <div class="word"
+                
                  data-category="ethical">
                 Fairness
             </div>
 
 
             <div class="word"
+                
                  data-category="social">
                 Digital Divide
             </div>
 
 
             <div class="word"
+                
                  data-category="responsible">
                 Human Oversight
             </div>
 
 
             <div class="word"
+                
                  data-category="ethical">
                 Misinformation
             </div>
 
 
             <div class="word"
+                
                  data-category="responsible">
                 Transparency
             </div>
 
 
             <div class="word"
+                
                  data-category="social">
                 Job Displacement
             </div>
 
 
             <div class="word"
+                
                  data-category="ethical">
                 Responsible Use
             </div>
@@ -1703,27 +2578,19 @@ body::after {
 
 
 
-    <!-- MESSAGE -->
-
-    <div
-        class="message"
-        id="message">
-        Select a word and place it into a category.
+    <div class="check-area">
+        <button
+            type="button"
+            class="check-answers"
+            onclick="checkAnswers()">
+            CHECK ANSWERS ✓
+        </button>
+        <div
+            class="message"
+            id="message">
+        </div>
     </div>
 
-
-    <!-- CHECK ANSWERS -->
-
-    <button
-        class="check-button"
-        onclick="checkAnswers()">
-
-        ✓ CHECK ANSWERS
-
-    </button>
-
-
-    <!-- RESET -->
 
     <button
         class="reset"
@@ -1733,12 +2600,126 @@ body::after {
 
     </button>
 
+    <button
+        class="continue-pressure"
+        id="continuePressureButton"
+        onclick="startPressureMode()"
+        style="display:none;">
+        CONTINUE TO PRESSURE MODE ⚡
+    </button>
+
 
 </div>
 
 </main>
 
 
+
+
+<!-- =========================================================
+     PRESSURE MODE
+========================================================= -->
+<section class="pressure-mode" id="pressureMode">
+    <div class="pressure-shell">
+
+        <div class="pressure-instructions" id="pressureInstructions">
+            <div class="mission-tape mission-tape-top"></div>
+            <div class="mission-red-light mission-red-light-left"></div>
+            <div class="mission-red-light mission-red-light-right"></div>
+
+            <div class="pressure-kicker">⚠ MISSION SYSTEM • PHASE 02</div>
+            <h1 class="mission-title">👻 PRESSURE MODE</h1>
+            <p class="pressure-subtitle">02 // HUMAN JUDGMENT</p>
+
+            <div class="instruction-card mission-card">
+                <div class="mission-card-top">
+                    <span>MISSION OBJECTIVE</span>
+                    <strong>02 / 02</strong>
+                </div>
+                <h2>MAKE THE RIGHT DECISION<br>BEFORE TIME RUNS OUT.</h2>
+                <div class="mission-stats">
+                    <span><b>08</b> ROUNDS</span>
+                    <span><b>LIMITED</b> TIME</span>
+                    <span><b>👻</b> DISTRACTIONS</span>
+                </div>
+                <div class="warning-line">⚠ SYSTEM ALERT • HUMAN JUDGMENT REQUIRED</div>
+            </div>
+
+            <button class="pressure-start" onclick="beginPressureGame()">BEGIN MISSION →</button>
+            <div class="mission-tape mission-tape-bottom"></div>
+        </div>
+
+        <div class="pressure-play" id="pressurePlay" style="display:none;">
+            <div class="pressure-top">
+                <div>
+                    <div class="pressure-kicker">AI ETHICS • PRESSURE MODE</div>
+                    <div class="round-label" id="roundLabel">ROUND 1 / 8</div>
+                </div>
+                <div class="pressure-score-box">
+                    <span>SCORE</span>
+                    <strong id="pressureScore">0</strong>
+                    <button class="sound-toggle" id="soundToggle" type="button" onclick="togglePressureSound()">🔊 SOUND ON</button>
+                </div>
+            </div>
+
+            <div class="pressure-progress">
+                <div id="pressureProgressBar"></div>
+            </div>
+
+            <div class="alert-zone" id="alertZone">SYSTEM STABLE</div>
+            <div class="pressure-side-alert left" id="sideAlertLeft"></div>
+            <div class="pressure-side-alert right" id="sideAlertRight"></div>
+
+            <div class="timer-wrap">
+                <div class="timer-number" id="timerNumber">10</div>
+                <div class="timer-track"><div id="timerBar"></div></div>
+                <div class="timer-status" id="timerStatus">BEST ANSWER • TIME IS LIMITED</div>
+            </div>
+
+            <div class="scenario-card">
+                <div class="scenario-tag">AI ETHICS SCENARIO</div>
+                <h2 id="scenarioQuestion"></h2>
+                <div class="answers" id="answers"></div>
+            </div>
+
+            <div class="chaos-note" id="chaosNote"></div>
+        </div>
+
+        <div class="pressure-result final-report" id="pressureResult">
+  <div class="final-report-head">
+    <div class="pressure-kicker">AI ETHICS • FINAL SYSTEM REPORT</div>
+    <div class="report-icon">◈</div>
+    <h1>CHALLENGE COMPLETE</h1>
+    <p>YOUR DECISIONS HAVE BEEN LOGGED.</p>
+  </div>
+  <div class="overall-score-card">
+    <div class="score-label">TOTAL SCORE</div>
+    <div class="overall-score"><span id="overallScore">0</span><small> / <span id="overallTotal">20</span></small></div>
+    <div class="overall-percent" id="overallPercent">0% PERFORMANCE</div>
+  </div>
+  <button class="score-toggle" id="scoreToggle" onclick="toggleScoreDetails()">▼ VIEW SCORE DETAILS</button>
+  <div class="score-details" id="scoreDetails">
+    <div class="score-row"><span>01 • WORD WALL</span><strong id="wordWallFinal">0 / 12</strong></div>
+    <div class="score-row"><span>02 • PRESSURE MODE</span><strong id="pressureFinal">0 / 8</strong></div>
+    <div class="score-row total"><span>TOTAL</span><strong id="totalFinal">0 / 20</strong></div>
+  </div>
+  <div class="answer-review-heading">
+    <div class="pressure-kicker">DECISION LOG</div>
+    <h2>ANSWER REVIEW</h2>
+    <p>See each question, your decision, and the correct response.</p>
+  </div>
+  <section class="review-section">
+    <div class="review-section-title"><span>ACTIVITY 01</span><strong>WORD WALL</strong></div>
+    <div id="wordReviewList" class="review-list"></div>
+  </section>
+  <section class="review-section">
+    <div class="review-section-title"><span>ACTIVITY 02</span><strong>PRESSURE MODE</strong></div>
+    <div id="pressureReviewList" class="review-list"></div>
+  </section>
+  <div class="final-actions"><button class="pressure-start" onclick="restartChallenge()">PLAY AGAIN ↻</button></div>
+</div>
+</div>
+</section>
 
 <!-- =========================================================
      COMPLETION
@@ -1758,12 +2739,8 @@ body::after {
             Well Done
         </h2>
 
-        <div
-            class="final-score"
-            id="finalScore">
-
-            12/12
-
+        <div class="final-score">
+            <span id="finalScore">0</span>/12
         </div>
 
         <p>
@@ -1772,13 +2749,19 @@ body::after {
             ethical artificial intelligence.
         </p>
 
-        <button
-            class="play-again"
-            onclick="resetGame()">
+        <div class="completion-actions">
+            <button
+                class="review-word-wall"
+                onclick="reviewWordWall()">
+                ◫ REVIEW WORD WALL
+            </button>
 
-            PLAY AGAIN →
-
-        </button>
+            <button
+                class="play-again"
+                onclick="startPressureMode()">
+                PRESSURE MODE ⚡
+            </button>
+        </div>
 
     </div>
 
@@ -1786,485 +2769,758 @@ body::after {
 
 
 
+
 <script>
-
 /* =========================================================
-   GAME VARIABLES
+   WORD WALL
 ========================================================= */
-
 let score = 0;
-
 let selectedWord = null;
-
+let wordReviewData = [];
+let answersChecked = false;
+let placementHistory = [];
 const totalWords = 12;
 
-const wordBank =
-    document.getElementById("wordBank");
-
-const categories =
-    document.querySelectorAll(".category");
-
-
-/* =========================================================
-   RANDOMIZE WORDS
-========================================================= */
+const wordBank = document.getElementById("wordBank");
+const categories = document.querySelectorAll(".category");
 
 function shuffleWords() {
-
-    const words =
-        Array.from(
-            wordBank.querySelectorAll(".word")
-        );
-
-
-    for (
-        let i = words.length - 1;
-        i > 0;
-        i--
-    ) {
-
-        const randomIndex =
-            Math.floor(
-                Math.random() * (i + 1)
-            );
-
-
-        [
-            words[i],
-            words[randomIndex]
-        ] =
-        [
-            words[randomIndex],
-            words[i]
-        ];
-
+    const words = Array.from(wordBank.querySelectorAll(".word"));
+    for (let i = words.length - 1; i > 0; i--) {
+        const randomIndex = Math.floor(Math.random() * (i + 1));
+        [words[i], words[randomIndex]] = [words[randomIndex], words[i]];
     }
-
-
-    words.forEach(word => {
-
-        wordBank.appendChild(word);
-
-    });
-
+    words.forEach(word => wordBank.appendChild(word));
 }
 
-
-/* =========================================================
-   START GAME
-========================================================= */
+function shuffleUnplacedWords() {
+    if (answersChecked) return;
+    const words = Array.from(wordBank.querySelectorAll(".word"));
+    for (let i = words.length - 1; i > 0; i--) {
+        const randomIndex = Math.floor(Math.random() * (i + 1));
+        [words[i], words[randomIndex]] = [words[randomIndex], words[i]];
+    }
+    words.forEach(word => wordBank.appendChild(word));
+    document.getElementById("message").textContent = "WORD BANK SHUFFLED — SAME CONCEPTS, NEW ORDER.";
+    document.getElementById("wordToolStatus").textContent = `${words.length} CONCEPT${words.length===1?"":"S"} STILL IN PLAY`;
+}
 
 function startGame() {
-
+    document.getElementById("startScreen").style.display = "none";
+    document.getElementById("game").style.display = "block";
+    document.getElementById("pressureMode").style.display = "none";
+    document.getElementById("complete").style.display = "none";
+    document.querySelector(".check-answers").disabled = false;
+    document.querySelector(".check-answers").textContent = "CHECK ANSWERS ✓";
+    document.getElementById("message").textContent = "PLACE ALL CONCEPTS, THEN CHECK YOUR ANSWERS.";
+    placementHistory = [];
+    document.getElementById("undoWordButton").disabled = true;
     shuffleWords();
-
-    document
-        .getElementById("startScreen")
-        .style.display = "none";
-
-
-    document
-        .getElementById("game")
-        .style.display = "block";
-
+    window.scrollTo({top:0, behavior:"smooth"});
 }
 
+document.querySelectorAll(".word").forEach(word => {
+    word.addEventListener("click", function() {
+        if (answersChecked || word.classList.contains("placed-word")) return;
 
-/* =========================================================
-   WORD SELECTION
-========================================================= */
-
-function addClickEvents() {
-
-    const words =
-        document.querySelectorAll(".word");
-
-    words.forEach(word => {
-
-        word.addEventListener("click", function() {
-
-            /*
-               Remove previous selection
-            */
-
-            document
-                .querySelectorAll(".word.selected")
-                .forEach(item => {
-
-                    item.classList.remove("selected");
-
-                });
-
-
-            /*
-               Select this word
-            */
-
-            selectedWord = word;
-
-            word.classList.add("selected");
-
-
-            document
-                .getElementById("message")
-                .textContent =
-                "SELECTED — NOW CHOOSE A CATEGORY";
-
+        document.querySelectorAll(".word.selected").forEach(item => {
+            item.classList.remove("selected");
         });
 
+        selectedWord = word;
+        word.classList.add("selected");
+        document.getElementById("message").textContent =
+            "SELECTED — NOW CLICK A CATEGORY";
     });
-
-}
-
-addClickEvents();
-
-
-/* =========================================================
-   CATEGORY SELECTION
-========================================================= */
+});
 
 categories.forEach(category => {
-
     category.addEventListener("click", function() {
-
-        /*
-           Make sure a word was selected
-        */
+        if (answersChecked) return;
 
         if (!selectedWord) {
-
-            document
-                .getElementById("message")
-                .textContent =
+            document.getElementById("message").textContent =
                 "SELECT A WORD FIRST";
 
             category.classList.add("wrong");
-
-            setTimeout(function() {
-
-                category.classList.remove("wrong");
-
-            }, 500);
-
+            setTimeout(() => category.classList.remove("wrong"), 350);
             return;
         }
 
+        const placed = selectedWord;
+        const fromBank = wordBank.contains(placed);
+        placed.classList.remove("selected", "word");
+        placed.classList.add("placed-word", "pop-in", "placed-pop");
 
-        /*
-           IMPORTANT:
+        category.querySelector(".drop-area").appendChild(placed);
+        placementHistory.push({word: placed, category});
+        document.getElementById("undoWordButton").disabled = false;
+        setTimeout(() => placed.classList.remove("pop-in", "placed-pop"), 360);
 
-           We DO NOT check the answer here.
-
-           The player is allowed to place
-           every word first.
-        */
-
-
-        /*
-           Move word into category
-        */
-
-        selectedWord.classList.remove("word");
-
-        selectedWord.classList.remove("selected");
-
-        selectedWord.classList.add("placed-word");
-
-
-        category
-            .querySelector(".drop-area")
-            .appendChild(selectedWord);
-
-
-        /*
-           Clear selection
-        */
+        document.getElementById("message").textContent =
+            "PLACED — KEEP GOING. CHECK YOUR ANSWERS WHEN READY.";
 
         selectedWord = null;
-
-
-        /*
-           Count how many words have been placed
-        */
-
-        const placedWords =
-            document.querySelectorAll(".placed-word").length;
-
-
-        document
-            .getElementById("remaining")
-            .textContent =
-            placedWords;
-
-
-        /*
-           Update progress based on
-           how many words are placed
-        */
-
-        const percentage =
-            Math.round(
-                (placedWords / totalWords) * 100
-            );
-
-
-        document
-            .getElementById("progressBar")
-            .style.width =
-            percentage + "%";
-
-
-        document
-            .getElementById("progressText")
-            .textContent =
-            percentage + "%";
-
-
-        /*
-           Message
-        */
-
-        if (placedWords === totalWords) {
-
-            document
-                .getElementById("message")
-                .textContent =
-                "ALL WORDS PLACED — CLICK CHECK ANSWERS";
-
-        } else {
-
-            document
-                .getElementById("message")
-                .textContent =
-                "PLACED — KEEP CATEGORIZING THE WORDS";
-
-        }
-
+        updatePlacedCount();
     });
-
 });
 
+function updatePlacedCount() {
+    const placed = document.querySelectorAll(".placed-word").length;
+    document.getElementById("remaining").textContent = totalWords - placed;
 
-/* =========================================================
-   CHECK ALL ANSWERS
-========================================================= */
+    const percentage = Math.round((placed / totalWords) * 100);
+    document.getElementById("progressBar").style.width = percentage + "%";
+    document.getElementById("progressText").textContent = percentage + "%";
+    const remainingText = totalWords - placed;
+    document.getElementById("wordToolStatus").textContent = remainingText ? `${remainingText} CONCEPT${remainingText===1?"":"S"} LEFT` : "ALL CONCEPTS PLACED • READY TO CHECK";
+    document.getElementById("undoWordButton").disabled = placementHistory.length === 0;
+    document.getElementById("game").classList.toggle("wordwall-ready", placed === totalWords && !answersChecked);
+
+}
+
+function undoLastPlacement() {
+    if (answersChecked || placementHistory.length === 0) return;
+    const last = placementHistory.pop();
+    const word = last.word;
+    word.classList.remove("placed-word", "locked");
+    word.classList.add("word", "pop-in");
+    wordBank.appendChild(word);
+    selectedWord = null;
+    document.getElementById("message").textContent = `UNDO — ${word.textContent.trim()} RETURNED TO THE WORD BANK.`;
+    setTimeout(() => word.classList.remove("pop-in"), 320);
+    updatePlacedCount();
+}
 
 function checkAnswers() {
+    if (answersChecked) return;
 
-    /*
-       Get all placed words
-    */
-
-    const placedWords =
-        document.querySelectorAll(".placed-word");
-
-
-    /*
-       Do not allow checking until
-       all 12 words are placed
-    */
+    const placedWords = document.querySelectorAll(".placed-word");
 
     if (placedWords.length < totalWords) {
+        const remaining = totalWords - placedWords.length;
+        document.getElementById("message").textContent =
+            `PLACE ALL ${remaining} REMAINING CONCEPT${remaining === 1 ? "" : "S"} BEFORE CHECKING.`;
 
-        document
-            .getElementById("message")
-            .textContent =
-            "PLACE ALL 12 WORDS INTO A CATEGORY FIRST.";
-
+        document.querySelector(".word-panel").animate(
+            [{transform:"translateX(-4px)"},{transform:"translateX(4px)"},{transform:"translateX(0)"}],
+            {duration:220}
+        );
         return;
     }
 
-
-    /*
-       Reset score
-    */
-
+    answersChecked = true;
     score = 0;
-
-
-    /*
-       Remove old category colors
-    */
-
-    categories.forEach(category => {
-
-        category.classList.remove("correct");
-        category.classList.remove("wrong");
-
-    });
-
-
-    /*
-       Check every word
-    */
+    wordReviewData = [];
 
     placedWords.forEach(word => {
-
-        /*
-           Get the correct category
-           stored in the word
-        */
-
-        const correctCategory =
-            word.dataset.category;
-
-
-        /*
-           Find the category where
-           the player placed the word
-        */
-
-        const category =
-            word.closest(".category");
-
-
-        const selectedCategory =
-            category.dataset.category;
-
-
-        /*
-           Compare the two
-        */
-
-        if (
-            correctCategory ===
-            selectedCategory
-        ) {
-
-            score++;
-
-        }
-
-    });
-
-
-    /*
-       Update score
-    */
-
-    document
-        .getElementById("score")
-        .textContent =
-        score;
-
-
-    /*
-       Progress becomes the score percentage
-    */
-
-    const percentage =
-        Math.round(
-            (score / totalWords) * 100
-        );
-
-
-    document
-        .getElementById("progressBar")
-        .style.width =
-        percentage + "%";
-
-
-    document
-        .getElementById("progressText")
-        .textContent =
-        percentage + "%";
-
-
-    /*
-       Highlight categories
-
-       GREEN = every word inside is correct
-       RED   = at least one word is wrong
-    */
-
-    categories.forEach(category => {
-
-        const words =
-            category.querySelectorAll(".placed-word");
-
-
-        let categoryCorrect = true;
-
-
-        words.forEach(word => {
-
-            if (
-                word.dataset.category !==
-                category.dataset.category
-            ) {
-
-                categoryCorrect = false;
-
-            }
-
+        const expected = word.dataset.category;
+        const actual = word.closest(".category").dataset.category;
+        const categoryNames = { responsible: "Responsible AI", ethical: "Ethical Issues", social: "Social Implications" };
+        wordReviewData.push({
+            concept: word.textContent.trim(),
+            correct: categoryNames[expected] || expected,
+            chosen: categoryNames[actual] || actual,
+            correctKey: expected,
+            chosenKey: actual,
+            isCorrect: expected === actual
         });
 
-
-        if (categoryCorrect) {
-
-            category.classList.add("correct");
-
+        if (expected === actual) {
+            score++;
+            word.classList.add("answer-correct");
+            word.closest(".category").classList.add("answer-checked-correct");
         } else {
-
-            category.classList.add("wrong");
-
+            word.classList.add("answer-wrong");
+            word.closest(".category").classList.add("answer-checked-wrong");
         }
 
+        word.classList.add("locked");
     });
 
+    document.getElementById("score").textContent = score;
+    document.getElementById("finalScore").textContent = score;
+    document.getElementById("remaining").textContent = 0;
+    document.getElementById("progressBar").style.width = "100%";
+    document.getElementById("progressText").textContent = "100%";
 
-    /*
-       Show result
-    */
+    document.getElementById("message").textContent =
+        `CHECK COMPLETE — ${score}/${totalWords} CORRECT`;
 
-    if (score === totalWords) {
+    const checkButton = document.querySelector(".check-answers");
+    checkButton.disabled = true;
+    checkButton.textContent = "✓ ANSWERS CHECKED";
+    document.getElementById("shuffleWordsButton").disabled = true;
+    document.getElementById("undoWordButton").disabled = true;
 
-        document
-            .getElementById("message")
-            .textContent =
-            "✓ PERFECT! ALL ANSWERS ARE CORRECT.";
-
-
-        document
-            .getElementById("finalScore")
-            .textContent =
-            score + "/" + totalWords;
-
-
-        setTimeout(function() {
-
-            document
-                .getElementById("complete")
-                .style.display = "flex";
-
-        }, 1000);
-
-    } else {
-
-        document
-            .getElementById("message")
-            .textContent =
-            "CHECK COMPLETE — SCORE: " +
-            score +
-            "/" +
-            totalWords;
-
-    }
-
+    setTimeout(() => {
+        document.getElementById("complete").style.display = "flex";
+    }, 700);
 }
 
+function reviewWordWall() {
+    // The Word Wall is locked after checking, but remains fully visible for review.
+    document.getElementById("complete").style.display = "none";
+    document.getElementById("startScreen").style.display = "none";
+    document.getElementById("pressureMode").style.display = "none";
+    document.getElementById("game").style.display = "block";
 
-/* =========================================================
-   RESET
-========================================================= */
+    const checkButton = document.querySelector(".check-answers");
+    checkButton.disabled = true;
+    checkButton.textContent = "✓ ANSWERS LOCKED — REVIEW MODE";
+
+    document.getElementById("message").textContent =
+        `REVIEW MODE • ${score}/${totalWords} CORRECT • YOUR ANSWERS ARE LOCKED`;
+
+    document.getElementById("continuePressureButton").style.display = "block";
+    window.scrollTo({top:0, behavior:"smooth"});
+}
 
 function resetGame() {
-
     location.reload();
-
 }
 
+/* =========================================================
+   PRESSURE MODE
+========================================================= */
+const pressureQuestions = [
+    {
+        q: "An AI study tool asks for personal information to personalize your experience. What is the safest response?",
+        a: [
+            "Give only the information actually needed for the tool to work.",
+            "Give more personal information because it may improve accuracy.",
+            "Give personal information as long as you avoid passwords.",
+            "Give the information now and remove it later."
+        ],
+        correct: 0
+    },
+    {
+        q: "An AI gives a surprising fact for your school project. What should you do before using it?",
+        a: [
+            "Check the information against reliable sources.",
+            "Compare it with another AI and use whichever sounds better.",
+            "Use it if the explanation sounds convincing.",
+            "Use it if several people received the same answer."
+        ],
+        correct: 0
+    },
+    {
+        q: "You do not understand an assignment, so you ask AI for the answer. What is the most responsible approach?",
+        a: [
+            "Copy the answer, then read it afterward.",
+            "Ask AI to explain the lesson so you can understand it yourself.",
+            "Ask for several answers and submit the best one.",
+            "Rewrite the AI answer in your own words and submit it."
+        ],
+        correct: 1
+    },
+    {
+        q: "An AI-generated post makes a shocking claim. Thousands of people are sharing it. What should you do?",
+        a: [
+            "Verify the claim before sharing it.",
+            "Share it because many people already believe it.",
+            "Share it but mention that AI created it.",
+            "Ask another AI and trust its answer immediately."
+        ],
+        correct: 0
+    },
+    {
+        q: "You use AI-assisted content in a school project. What should you consider?",
+        a: [
+            "Whether the content looks different enough from other work.",
+            "Whether AI created most of the content.",
+            "Whether copyright and proper use of the content should be respected.",
+            "Whether your classmates are also using AI."
+        ],
+        correct: 2
+    },
+    {
+        q: "Which situation is primarily an example of responsible use rather than ethical use?",
+        a: [
+            "Refusing to use AI to deceive someone.",
+            "Checking whether an AI-generated answer is accurate.",
+            "Refusing to create harmful content.",
+            "Avoiding discriminatory use of AI."
+        ],
+        correct: 1
+    },
+    {
+        q: "An AI system produces an answer that could affect another person's opportunity. What should the user do?",
+        a: [
+            "Accept it because AI is designed to be objective.",
+            "Use it if the answer is produced quickly.",
+            "Review the result critically and keep human responsibility in the decision.",
+            "Ask the AI to decide again until the result looks fair."
+        ],
+        correct: 2
+    },
+    {
+        q: "An AI tool asks for your password. What should you do?",
+        a: [
+            "Do not share your password or other private login information.",
+            "Share it if the AI says it is needed.",
+            "Share it if you delete it afterward.",
+            "Share it if the tool promises better results."
+        ],
+        correct: 0
+    }
+];
+
+const pressureTimes = [20,19,18,17,15,13,11,10];
+const alertMessages = [
+    "⚠ MISINFORMATION DETECTED",
+    "⚠ SOURCE NOT VERIFIED",
+    "▣ PRIVACY CHECK REQUIRED",
+    "⚠ BIAS SIGNAL DETECTED",
+    "SYSTEM: VERIFY BEFORE TRUSTING",
+    "⚡ RESPONSE WINDOW CLOSING",
+    "DATA REQUEST: REVIEW PERMISSIONS",
+    "AI OUTPUT: CONFIDENCE ≠ TRUTH",
+    "⚠ UNVERIFIED CLAIM DETECTED",
+    "SYSTEM NOTICE: HUMAN JUDGMENT REQUIRED"
+];
+const stableMessages = [
+    "SYSTEM STABLE • VERIFY BEFORE TRUSTING",
+    "SOURCE CHECK PENDING",
+    "HUMAN JUDGMENT REQUIRED",
+    "AI OUTPUT ≠ AUTOMATICALLY TRUE"
+];
+
+let pressureIndex = 0;
+let pressureScore = 0;
+let pressureReviewData = [];
+let timerInterval = null;
+let alertInterval = null;
+let questionActive = false;
+let questionStart = 0;
+let questionDuration = 0;
+let pressureAudio = null;
+let pressureSoundOn = true;
+let lastSecond = null;
+let shakeTimeout = null;
+let sideAlertTimeout = null;
+
+function initPressureAudio(){
+    if (!pressureSoundOn) return;
+    try{
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if(!AudioCtx) return;
+        if(!pressureAudio) pressureAudio = new AudioCtx();
+        if(pressureAudio.state === "suspended") pressureAudio.resume();
+    }catch(e){ pressureAudio = null; }
+}
+
+function pressureTone(freq=440, duration=.08, type="square", volume=.035, delay=0){
+    if(!pressureSoundOn || !pressureAudio) return;
+    try{
+        const now = pressureAudio.currentTime + delay;
+        const osc = pressureAudio.createOscillator();
+        const gain = pressureAudio.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, now);
+        gain.gain.setValueAtTime(.0001, now);
+        gain.gain.exponentialRampToValueAtTime(volume, now+.008);
+        gain.gain.exponentialRampToValueAtTime(.0001, now+duration);
+        osc.connect(gain); gain.connect(pressureAudio.destination);
+        osc.start(now); osc.stop(now+duration+.02);
+    }catch(e){}
+}
+
+function pressureSound(kind){
+    if(!pressureSoundOn) return;
+    if(kind === "start"){
+        pressureTone(260,.07,"square",.035,0);
+        pressureTone(390,.09,"square",.04,.08);
+    }else if(kind === "alert"){
+        pressureTone(620,.045,"sawtooth",.025,0);
+        pressureTone(440,.06,"sawtooth",.02,.055);
+    }else if(kind === "tick"){
+        pressureTone(760,.045,"square",.025,0);
+    }else if(kind === "critical"){
+        pressureTone(900,.07,"square",.04,0);
+        pressureTone(680,.08,"square",.035,.085);
+    }else if(kind === "correct"){
+        pressureTone(620,.06,"triangle",.035,0);
+        pressureTone(900,.09,"triangle",.04,.07);
+    }else if(kind === "wrong"){
+        pressureTone(180,.14,"sawtooth",.04,0);
+    }else if(kind === "timeout"){
+        pressureTone(120,.18,"sawtooth",.05,0);
+        pressureTone(80,.22,"sawtooth",.04,.16);
+    }else if(kind === "next"){
+        pressureTone(500,.045,"square",.025,0);
+    }
+}
+
+function togglePressureSound(){
+    pressureSoundOn = !pressureSoundOn;
+    const btn = document.getElementById("soundToggle");
+    if(btn) btn.textContent = pressureSoundOn ? "🔊 SOUND ON" : "🔇 SOUND OFF";
+    if(pressureSoundOn){ initPressureAudio(); pressureTone(520,.07,"triangle",.025); }
+}
+
+function startPressureMode() {
+    document.getElementById("complete").style.display = "none";
+    document.getElementById("game").style.display = "none";
+    document.getElementById("startScreen").style.display = "none";
+
+    const mode = document.getElementById("pressureMode");
+    mode.classList.remove("pressure-warning","pressure-critical");
+    mode.style.display = "flex";
+
+    document.getElementById("continuePressureButton").style.display = "none";
+    document.getElementById("pressureInstructions").style.display = "block";
+    document.getElementById("pressurePlay").style.display = "none";
+    document.getElementById("pressureResult").style.display = "none";
+
+    window.scrollTo({top:0, behavior:"smooth"});
+}
+
+function beginPressureGame() {
+    initPressureAudio();
+    clearInterval(timerInterval);
+    clearInterval(alertInterval);
+    clearTimeout(sideAlertTimeout);
+    clearTimeout(shakeTimeout);
+
+    pressureIndex = 0;
+    pressureScore = 0;
+    pressureReviewData = [];
+    lastSecond = null;
+
+    document.getElementById("pressureInstructions").style.display = "none";
+    document.getElementById("pressureResult").style.display = "none";
+    document.getElementById("pressurePlay").classList.remove("pressure-warning","pressure-critical","critical-state");
+    document.getElementById("pressurePlay").style.display = "block";
+    document.getElementById("pressureMode").classList.remove("pressure-warning","pressure-critical");
+
+    document.getElementById("pressureScore").textContent = "0";
+    document.getElementById("pressureProgressBar").style.width = "0%";
+
+    pressureSound("start");
+    startPressureAlerts();
+    showPressureQuestion();
+}
+
+function showSideAlert(message, level="", side=null){
+    const targets = [document.getElementById("sideAlertLeft"), document.getElementById("sideAlertRight")];
+    // Corners are deliberately common so the player has to keep scanning the interface.
+    const positions = ["left","right","corner-tl","corner-tr","corner-bl","corner-br","corner-tl","corner-tr"];
+    const position = side && positions.includes(side) ? side : positions[Math.floor(Math.random()*positions.length)];
+    const target = targets[Math.floor(Math.random()*targets.length)];
+    const other = targets.find(el => el !== target);
+    if(!target) return;
+    [target,other].forEach(el => { if(el){ el.className = "pressure-side-alert " + (el===target ? position : ""); el.textContent = ""; el.classList.remove("show"); }});
+    target.className = "pressure-side-alert " + position + (level ? " " + level : "");
+    target.textContent = message;
+    void target.offsetWidth;
+    target.classList.add("show");
+    clearTimeout(sideAlertTimeout);
+    sideAlertTimeout = setTimeout(() => target.classList.remove("show"), 900);
+    pressureSound("alert");
+}
+
+function startPressureAlerts() {
+    const zone = document.getElementById("alertZone");
+    clearInterval(alertInterval);
+
+    const showAlert = () => {
+        if (!questionActive) return;
+        const seconds = Math.ceil((questionStart + questionDuration - performance.now()) / 1000);
+        if (seconds <= 0) return;
+
+        const level = seconds <= 2 ? "alert-critical" : seconds <= 5 ? "alert-warning" : "";
+        const msg = alertMessages[Math.floor(Math.random() * alertMessages.length)];
+        zone.className = "alert-zone " + level + " alert-pop";
+        zone.textContent = msg;
+        setTimeout(() => {
+            zone.classList.remove("alert-pop");
+            if (questionActive) {
+                zone.className = "alert-zone " + (seconds <= 2 ? "alert-critical" : seconds <= 5 ? "alert-warning" : "");
+                zone.textContent = seconds <= 2 ? "🚨 RESPOND NOW" : seconds <= 5 ? "⚠ TIME RUNNING LOW" : stableMessages[Math.floor(Math.random()*stableMessages.length)];
+            }
+        }, 450);
+
+        showSideAlert(msg, seconds <= 2 ? "critical" : seconds <= 5 ? "warning" : "");
+    };
+
+    // Frequent enough to feel intrusive, but each alert disappears quickly.
+    alertInterval = setInterval(showAlert, 850);
+}
+
+function getTimerMessage(seconds = Math.ceil((questionStart + questionDuration - performance.now()) / 1000)) {
+    if (seconds <= 0) return "💀 TIMEOUT";
+    if (seconds <= 2) return "🚨 RESPOND NOW";
+    if (seconds <= 5) return "⚠ TIME RUNNING LOW";
+    return "SYSTEM STABLE";
+}
+
+function triggerEasyRoundShake(seconds){
+    // Only the easier first four rounds get the physical shake.
+    if(pressureIndex > 3 || seconds > 3 || seconds <= 0) return;
+    const play = document.getElementById("pressurePlay");
+    play.classList.remove("easy-shake");
+    void play.offsetWidth;
+    play.classList.add("easy-shake");
+    clearTimeout(shakeTimeout);
+    shakeTimeout = setTimeout(() => play.classList.remove("easy-shake"), 420);
+}
+
+function setTimerState(seconds, percent) {
+    const number = document.getElementById("timerNumber");
+    const bar = document.getElementById("timerBar");
+    const play = document.getElementById("pressurePlay");
+    const mode = document.getElementById("pressureMode");
+    number.className = "timer-number";
+    bar.className = "";
+    play.classList.remove("critical-state","pressure-warning","pressure-orange","pressure-critical");
+    mode.classList.remove("pressure-warning","pressure-critical");
+
+    if (seconds <= 0) {
+        number.classList.add("timeout");
+        bar.classList.add("timeout");
+        play.classList.add("critical-state","pressure-critical");
+    } else if (seconds <= 2) {
+        number.classList.add("critical");
+        bar.classList.add("critical");
+        play.classList.add("critical-state","pressure-critical");
+        mode.classList.add("pressure-critical");
+    } else if (seconds <= 5) {
+        number.classList.add("critical");
+        bar.classList.add("critical");
+        play.classList.add("pressure-critical");
+        mode.classList.add("pressure-critical");
+    } else if (seconds <= 10) {
+        number.classList.add("warning");
+        bar.classList.add("warning");
+        play.classList.add("pressure-warning","pressure-orange");
+        mode.classList.add("pressure-warning");
+    } else if (seconds <= 15) {
+        play.classList.add("pressure-warning");
+        mode.classList.add("pressure-warning");
+    }
+}
+
+function shuffleArray(arr) {
+    const copy = [...arr];
+    for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+    }
+    return copy;
+}
+
+function showPressureQuestion() {
+    if (pressureIndex >= pressureQuestions.length) {
+        finishPressureMode();
+        return;
+    }
+
+    const item = pressureQuestions[pressureIndex];
+    questionDuration = pressureTimes[pressureIndex] * 1000;
+    questionStart = performance.now();
+    questionActive = true;
+    lastSecond = null;
+
+    document.getElementById("roundLabel").textContent =
+        pressureIndex === pressureQuestions.length - 1
+            ? `FINAL ROUND • 10 SEC • LAST DECISION`
+            : `ROUND ${pressureIndex + 1} / ${pressureQuestions.length} • ${pressureTimes[pressureIndex]} SEC`;
+
+    document.getElementById("pressureProgressBar").style.width =
+        `${(pressureIndex / pressureQuestions.length) * 100}%`;
+
+    document.getElementById("scenarioQuestion").textContent = item.q;
+
+    const answers = document.getElementById("answers");
+    answers.innerHTML = "";
+
+    // Labels remain attached to their original answers; only their physical positions move.
+    const positions = shuffleArray([0,1,2,3]);
+    positions.forEach(index => {
+        const button = document.createElement("button");
+        button.className = "answer-button";
+        button.innerHTML = `<span>${String.fromCharCode(65 + index)}</span>${item.a[index]}`;
+        button.addEventListener("click", () => submitPressureAnswer(index));
+        answers.appendChild(button);
+    });
+
+    document.getElementById("timerStatus").textContent = "BEST ANSWER • TIME IS LIMITED";
+    document.getElementById("chaosNote").textContent =
+        pressureIndex >= 5 ? "⚠ SPEED INCREASING • DON'T PANIC" : "";
+
+    const zone = document.getElementById("alertZone");
+    zone.className = "alert-zone";
+    zone.textContent = stableMessages[Math.floor(Math.random()*stableMessages.length)];
+
+    document.querySelectorAll(".pressure-side-alert").forEach(el => el.classList.remove("show"));
+    pressureSound("next");
+    updateTimer();
+    clearInterval(timerInterval);
+    timerInterval = setInterval(updateTimer, 80);
+}
+
+function updateTimer() {
+    if (!questionActive) return;
+
+    const elapsed = performance.now() - questionStart;
+    const remainingMs = Math.max(0, questionDuration - elapsed);
+    const seconds = Math.ceil(remainingMs / 1000);
+    const percent = (remainingMs / questionDuration) * 100;
+
+    document.getElementById("timerNumber").textContent = seconds;
+    document.getElementById("timerBar").style.width = percent + "%";
+    document.getElementById("timerStatus").textContent = getTimerMessage(seconds);
+    setTimerState(seconds, percent);
+
+    if(seconds !== lastSecond){
+        lastSecond = seconds;
+        if(seconds <= 5 && seconds > 2) pressureSound("tick");
+        if(seconds === 3 || seconds === 2) {
+            triggerEasyRoundShake(seconds);
+            showSideAlert(seconds === 3 ? "⚠ DECISION WINDOW SHRINKING" : "🚨 RESPOND NOW", "critical");
+        }
+        if(seconds === 1){
+            pressureSound("critical");
+            triggerEasyRoundShake(seconds);
+            showSideAlert("🚨 FINAL SECOND", "critical");
+        }
+    }
+
+    if (remainingMs <= 0) {
+        submitPressureAnswer(null);
+    }
+}
+
+function submitPressureAnswer(choice) {
+    if (!questionActive) return;
+
+    questionActive = false;
+    clearInterval(timerInterval);
+    clearTimeout(shakeTimeout);
+
+    const item = pressureQuestions[pressureIndex];
+    const buttons = document.querySelectorAll(".answer-button");
+    buttons.forEach(button => button.disabled = true);
+
+    const correct = choice !== null && choice === item.correct;
+    pressureReviewData.push({ round: pressureIndex + 1, question: item.q, choices: item.a.slice(), chosenIndex: choice, correctIndex: item.correct, isCorrect: correct, timedOut: choice === null });
+    const play = document.getElementById("pressurePlay");
+
+    play.classList.add("impact-flash");
+    setTimeout(() => play.classList.remove("impact-flash"), 240);
+
+    if (correct) {
+        pressureScore++;
+        document.getElementById("pressureScore").textContent = pressureScore;
+        buttons[[...buttons].findIndex(b => b.querySelector("span")?.textContent === String.fromCharCode(65 + choice))]?.classList.add("answer-good");
+        document.getElementById("timerStatus").textContent = "⚡ QUICK! +1";
+        document.getElementById("chaosNote").textContent = "CORRECT — NEXT QUESTION";
+        pressureSound("correct");
+    } else if (choice === null) {
+        document.getElementById("timerNumber").textContent = "0";
+        const correctButton = [...buttons].find(b => b.querySelector("span")?.textContent === String.fromCharCode(65 + item.correct));
+        if(correctButton) correctButton.classList.add("answer-good");
+        document.getElementById("timerStatus").textContent = "💀 TIMEOUT";
+        document.getElementById("chaosNote").textContent = "TIMEOUT — QUESTION SKIPPED";
+        pressureSound("timeout");
+        showSideAlert("💀 TIMEOUT • NEXT", "critical");
+    } else {
+        const chosenButton = [...buttons].find(b => b.querySelector("span")?.textContent === String.fromCharCode(65 + choice));
+        const correctButton = [...buttons].find(b => b.querySelector("span")?.textContent === String.fromCharCode(65 + item.correct));
+        if(chosenButton) chosenButton.classList.add("answer-bad");
+        if(correctButton) correctButton.classList.add("answer-good");
+        document.getElementById("timerStatus").textContent = "✗ WRONG";
+        document.getElementById("chaosNote").textContent = "WRONG — NEXT QUESTION";
+        pressureSound("wrong");
+    }
+
+    pressureIndex++;
+    setTimeout(showPressureQuestion, 380);
+}
+
+function finishPressureMode() {
+    clearInterval(timerInterval);
+    clearInterval(alertInterval);
+    clearTimeout(sideAlertTimeout);
+    clearTimeout(shakeTimeout);
+    questionActive = false;
+
+    document.getElementById("pressurePlay").style.display = "none";
+    document.getElementById("pressureResult").style.display = "block";
+    renderFinalReport();
+    pressureSound(pressureScore >= 6 ? "correct" : "timeout");
+}
+
+function renderFinalReport() {
+    const total = totalWords + pressureQuestions.length;
+    const totalScore = score + pressureScore;
+    const percent = Math.round((totalScore / total) * 100);
+    document.getElementById("overallScore").textContent = totalScore;
+    document.getElementById("overallTotal").textContent = total;
+    document.getElementById("overallPercent").textContent = percent + "% PERFORMANCE";
+    document.getElementById("wordWallFinal").textContent = `${score} / ${totalWords}`;
+    document.getElementById("pressureFinal").textContent = `${pressureScore} / ${pressureQuestions.length}`;
+    document.getElementById("totalFinal").textContent = `${totalScore} / ${total}`;
+
+    const categoryNames = { responsible: "Responsible AI", ethical: "Ethical Issues", social: "Social Implications" };
+    const categoryKeys = ["responsible", "ethical", "social"];
+    const correctByCategory = { responsible: [], ethical: [], social: [] };
+    const chosenByCategory = { responsible: [], ethical: [], social: [] };
+    wordReviewData.forEach(item => {
+      correctByCategory[item.correctKey].push(item.concept);
+      chosenByCategory[item.chosenKey].push(item.concept);
+    });
+    const renderCategoryTables = (source, label) => categoryKeys.map(key => {
+      const items = source[key];
+      return `<div class="category-review-block">
+        <div class="category-review-title"><strong>${categoryNames[key]}</strong><span>${items.length} CONCEPT${items.length===1?"":"S"}</span></div>
+        <table class="category-review-table"><thead><tr><th>CONCEPT</th><th>${label}</th></tr></thead><tbody>
+          ${items.length ? items.map(concept => {
+            const item = wordReviewData.find(entry => entry.concept === concept);
+            const correctPlacement = item && item.isCorrect;
+            if (label === "CORRECT CATEGORY") {
+              return `<tr><td>${escapeHTML(concept)}</td><td><span class="match">✓ CORRECT ANSWER</span></td></tr>`;
+            }
+            return `<tr><td>${escapeHTML(concept)}</td><td><span class="${correctPlacement ? "your-correct" : "your-wrong"}">${correctPlacement ? "✓ CORRECT" : "✗ WRONG"}</span></td></tr>`;
+          }).join("") : '<tr><td colspan="2">— NO CONCEPTS —</td></tr>'}
+        </tbody></table>
+      </div>`;
+    }).join("");
+    document.getElementById("wordReviewList").innerHTML = `
+      <div class="review-table-label">THE CORRECT WORD WALL</div>
+      <div class="word-wall-review">${renderCategoryTables(correctByCategory, "CORRECT CATEGORY")}</div>
+      <div class="review-table-label">YOUR WORD WALL</div>
+      <div class="word-wall-review">${renderCategoryTables(chosenByCategory, "YOUR PLACEMENT")}</div>`;
+
+    document.getElementById("pressureReviewList").innerHTML = pressureReviewData.map(item => {
+      const chosen = item.chosenIndex === null ? "No answer — TIMEOUT" : item.choices[item.chosenIndex];
+      const correct = item.choices[item.correctIndex];
+      return `<article class="question-review ${item.isCorrect ? "review-correct" : "review-wrong"}">
+        <div class="review-number">ROUND ${String(item.round).padStart(2,"0")}</div>
+        <h3>${escapeHTML(item.question)}</h3>
+        <div class="review-answer ${item.isCorrect ? "green" : "red"}"><span>${item.isCorrect ? "✓ YOUR ANSWER" : "✗ YOUR ANSWER"}</span><strong>${escapeHTML(chosen)}</strong></div>
+        ${item.isCorrect ? "" : `<div class="review-answer green"><span>✓ CORRECT ANSWER</span><strong>${escapeHTML(correct)}</strong></div>`}
+        <div class="review-result ${item.isCorrect ? "ok" : "bad"}">${item.isCorrect ? "✓ CORRECT" : (item.timedOut ? "⏱ TIMEOUT" : "✗ INCORRECT")}</div>
+      </article>`;
+    }).join("");
+    document.getElementById("pressureResult").scrollIntoView({behavior:"smooth", block:"start"});
+}
+
+function toggleScoreDetails() {
+    const details = document.getElementById("scoreDetails");
+    const button = document.getElementById("scoreToggle");
+    const open = details.classList.toggle("open");
+    button.textContent = open ? "▲ HIDE SCORE DETAILS" : "▼ VIEW SCORE DETAILS";
+}
+
+function escapeHTML(value) {
+    return String(value).replace(/[&<>"']/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[ch]));
+}
+
+function restartChallenge() { location.reload(); }
 </script>
+
 
 </body>
 </html>
