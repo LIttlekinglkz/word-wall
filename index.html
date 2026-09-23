@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -90,6 +91,7 @@ body::after {
     overflow: hidden;
 
     border: 2px solid #4b6cff;
+
     background:
         radial-gradient(
             circle at 78% 38%,
@@ -863,10 +865,6 @@ body::after {
     transform: translateY(-3px);
 }
 
-.category.selected {
-    border-color: #34d8ff;
-}
-
 
 /* =========================================================
    CATEGORIES
@@ -936,23 +934,6 @@ body::after {
     box-shadow:
         15px 0 #318cff,
         30px 0 #318cff;
-}
-
-
-.category.drag-over {
-    border-color: #34d8ff;
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(15,65,105,.95),
-            rgba(5,25,48,.95)
-        );
-
-    transform: translateY(-4px);
-
-    box-shadow:
-        0 15px 40px rgba(0,140,255,.15);
 }
 
 .category.correct {
@@ -1038,7 +1019,7 @@ body::after {
 ========================================================= */
 
 .message {
-    height: 25px;
+    min-height: 25px;
 
     text-align: center;
 
@@ -1052,12 +1033,50 @@ body::after {
 
 
 /* =========================================================
+   CHECK ANSWERS BUTTON
+========================================================= */
+
+.check-button {
+    display: block;
+    margin: 25px auto 10px;
+
+    padding: 14px 30px;
+
+    border: 1px solid #5ca8ff;
+
+    background: #0c4eb4;
+
+    color: white;
+
+    font-weight: 800;
+    font-size: 12px;
+    letter-spacing: 2px;
+
+    cursor: pointer;
+
+    transition: .2s;
+
+    box-shadow:
+        0 10px 30px rgba(0,70,255,.25);
+}
+
+.check-button:hover {
+    background: #1768dd;
+    transform: translateY(-2px);
+}
+
+.check-button:active {
+    transform: scale(.97);
+}
+
+
+/* =========================================================
    RESET BUTTON
 ========================================================= */
 
 .reset {
     display: block;
-    margin: auto;
+    margin: 10px auto;
 
     padding: 10px 20px;
 
@@ -1250,6 +1269,7 @@ body::after {
 
 }
 
+
 @media (max-width: 500px) {
 
     .hero-title {
@@ -1308,7 +1328,6 @@ body::after {
                     THE
                     <span class="outline">ETHICS</span>
                     <br>
-
                     OF
                     <span class="blue">AI</span>
 
@@ -1440,7 +1459,7 @@ body::after {
             </h1>
 
             <p>
-                Click a word, then click the category where it belongs.
+                Place every word into a category, then check your answers.
             </p>
 
         </div>
@@ -1461,10 +1480,10 @@ body::after {
 
             <div class="stat">
 
-                <small>REMAINING</small>
+                <small>PLACED</small>
 
                 <strong id="remaining">
-                    12
+                    0
                 </strong>
 
             </div>
@@ -1511,7 +1530,7 @@ body::after {
             </h2>
 
             <span>
-                Click a concept, then choose a category ↓
+                Select a concept, then choose a category ↓
             </span>
 
         </div>
@@ -1523,84 +1542,72 @@ body::after {
             <!-- RANDOMIZED BY JAVASCRIPT -->
 
             <div class="word"
-                
                  data-category="social">
                 Social Impact
             </div>
 
 
             <div class="word"
-                
                  data-category="responsible">
                 Privacy
             </div>
 
 
             <div class="word"
-                
                  data-category="ethical">
                 Bias
             </div>
 
 
             <div class="word"
-                
                  data-category="social">
                 Education
             </div>
 
 
             <div class="word"
-                
                  data-category="responsible">
                 Accountability
             </div>
 
 
             <div class="word"
-                
                  data-category="ethical">
                 Fairness
             </div>
 
 
             <div class="word"
-                
                  data-category="social">
                 Digital Divide
             </div>
 
 
             <div class="word"
-                
                  data-category="responsible">
                 Human Oversight
             </div>
 
 
             <div class="word"
-                
                  data-category="ethical">
                 Misinformation
             </div>
 
 
             <div class="word"
-                
                  data-category="responsible">
                 Transparency
             </div>
 
 
             <div class="word"
-                
                  data-category="social">
                 Job Displacement
             </div>
 
 
             <div class="word"
-                
                  data-category="ethical">
                 Responsible Use
             </div>
@@ -1696,11 +1703,27 @@ body::after {
 
 
 
+    <!-- MESSAGE -->
+
     <div
         class="message"
         id="message">
+        Select a word and place it into a category.
     </div>
 
+
+    <!-- CHECK ANSWERS -->
+
+    <button
+        class="check-button"
+        onclick="checkAnswers()">
+
+        ✓ CHECK ANSWERS
+
+    </button>
+
+
+    <!-- RESET -->
 
     <button
         class="reset"
@@ -1735,8 +1758,12 @@ body::after {
             Well Done
         </h2>
 
-        <div class="final-score">
+        <div
+            class="final-score"
+            id="finalScore">
+
             12/12
+
         </div>
 
         <p>
@@ -1767,7 +1794,7 @@ body::after {
 
 let score = 0;
 
-let draggedWord = null;
+let selectedWord = null;
 
 const totalWords = 12;
 
@@ -1776,7 +1803,6 @@ const wordBank =
 
 const categories =
     document.querySelectorAll(".category");
-
 
 
 /* =========================================================
@@ -1824,7 +1850,6 @@ function shuffleWords() {
 }
 
 
-
 /* =========================================================
    START GAME
 ========================================================= */
@@ -1845,40 +1870,45 @@ function startGame() {
 }
 
 
-
-/* =========================================================
-   CLICK-TO-SELECT GAME
-========================================================= */
-
-let selectedWord = null;
-
-
 /* =========================================================
    WORD SELECTION
 ========================================================= */
 
 function addClickEvents() {
 
-    const words = document.querySelectorAll(".word");
+    const words =
+        document.querySelectorAll(".word");
 
     words.forEach(word => {
 
         word.addEventListener("click", function() {
 
+            /*
+               Remove previous selection
+            */
+
             document
                 .querySelectorAll(".word.selected")
                 .forEach(item => {
+
                     item.classList.remove("selected");
+
                 });
+
+
+            /*
+               Select this word
+            */
 
             selectedWord = word;
 
             word.classList.add("selected");
 
+
             document
                 .getElementById("message")
                 .textContent =
-                "SELECTED — NOW CLICK A CATEGORY";
+                "SELECTED — NOW CHOOSE A CATEGORY";
 
         });
 
@@ -1897,6 +1927,10 @@ categories.forEach(category => {
 
     category.addEventListener("click", function() {
 
+        /*
+           Make sure a word was selected
+        */
+
         if (!selectedWord) {
 
             document
@@ -1907,121 +1941,317 @@ categories.forEach(category => {
             category.classList.add("wrong");
 
             setTimeout(function() {
+
                 category.classList.remove("wrong");
+
             }, 500);
 
             return;
         }
 
 
-        const correctCategory =
-            selectedWord.dataset.category;
+        /*
+           IMPORTANT:
 
-        const selectedCategory =
-            category.dataset.category;
+           We DO NOT check the answer here.
 
-
-        /* =================================================
-           CORRECT
-        ================================================= */
-
-        if (correctCategory === selectedCategory) {
-
-            score++;
-
-            document
-                .getElementById("score")
-                .textContent = score;
-
-            document
-                .getElementById("remaining")
-                .textContent =
-                totalWords - score;
-
-            const percentage =
-                Math.round(
-                    (score / totalWords) * 100
-                );
-
-            document
-                .getElementById("progressBar")
-                .style.width =
-                percentage + "%";
-
-            document
-                .getElementById("progressText")
-                .textContent =
-                percentage + "%";
+           The player is allowed to place
+           every word first.
+        */
 
 
-            selectedWord.classList.remove("word");
-            selectedWord.classList.remove("selected");
-            selectedWord.classList.add("placed-word");
+        /*
+           Move word into category
+        */
 
-            category
-                .querySelector(".drop-area")
-                .appendChild(selectedWord);
+        selectedWord.classList.remove("word");
 
+        selectedWord.classList.remove("selected");
 
-            category.classList.add("correct");
-
-            document
-                .getElementById("message")
-                .textContent =
-                "✓ CORRECT — GOOD THINKING";
+        selectedWord.classList.add("placed-word");
 
 
-            setTimeout(function() {
-
-                category.classList.remove("correct");
-
-            }, 700);
+        category
+            .querySelector(".drop-area")
+            .appendChild(selectedWord);
 
 
-            selectedWord = null;
+        /*
+           Clear selection
+        */
+
+        selectedWord = null;
 
 
-            if (score === totalWords) {
+        /*
+           Count how many words have been placed
+        */
 
-                setTimeout(function() {
-
-                    document
-                        .getElementById("complete")
-                        .style.display = "flex";
-
-                }, 800);
-
-            }
-
-        }
+        const placedWords =
+            document.querySelectorAll(".placed-word").length;
 
 
-        /* =================================================
-           WRONG
-        ================================================= */
+        document
+            .getElementById("remaining")
+            .textContent =
+            placedWords;
 
-        else {
 
-            category.classList.add("wrong");
+        /*
+           Update progress based on
+           how many words are placed
+        */
+
+        const percentage =
+            Math.round(
+                (placedWords / totalWords) * 100
+            );
+
+
+        document
+            .getElementById("progressBar")
+            .style.width =
+            percentage + "%";
+
+
+        document
+            .getElementById("progressText")
+            .textContent =
+            percentage + "%";
+
+
+        /*
+           Message
+        */
+
+        if (placedWords === totalWords) {
 
             document
                 .getElementById("message")
                 .textContent =
-                "✕ NOT QUITE — TRY ANOTHER CATEGORY";
+                "ALL WORDS PLACED — CLICK CHECK ANSWERS";
 
-            setTimeout(function() {
+        } else {
 
-                category.classList.remove("wrong");
-
-            }, 500);
-
-            // Keep the word selected so the player can try again.
+            document
+                .getElementById("message")
+                .textContent =
+                "PLACED — KEEP CATEGORIZING THE WORDS";
 
         }
 
     });
 
 });
+
+
+/* =========================================================
+   CHECK ALL ANSWERS
+========================================================= */
+
+function checkAnswers() {
+
+    /*
+       Get all placed words
+    */
+
+    const placedWords =
+        document.querySelectorAll(".placed-word");
+
+
+    /*
+       Do not allow checking until
+       all 12 words are placed
+    */
+
+    if (placedWords.length < totalWords) {
+
+        document
+            .getElementById("message")
+            .textContent =
+            "PLACE ALL 12 WORDS INTO A CATEGORY FIRST.";
+
+        return;
+    }
+
+
+    /*
+       Reset score
+    */
+
+    score = 0;
+
+
+    /*
+       Remove old category colors
+    */
+
+    categories.forEach(category => {
+
+        category.classList.remove("correct");
+        category.classList.remove("wrong");
+
+    });
+
+
+    /*
+       Check every word
+    */
+
+    placedWords.forEach(word => {
+
+        /*
+           Get the correct category
+           stored in the word
+        */
+
+        const correctCategory =
+            word.dataset.category;
+
+
+        /*
+           Find the category where
+           the player placed the word
+        */
+
+        const category =
+            word.closest(".category");
+
+
+        const selectedCategory =
+            category.dataset.category;
+
+
+        /*
+           Compare the two
+        */
+
+        if (
+            correctCategory ===
+            selectedCategory
+        ) {
+
+            score++;
+
+        }
+
+    });
+
+
+    /*
+       Update score
+    */
+
+    document
+        .getElementById("score")
+        .textContent =
+        score;
+
+
+    /*
+       Progress becomes the score percentage
+    */
+
+    const percentage =
+        Math.round(
+            (score / totalWords) * 100
+        );
+
+
+    document
+        .getElementById("progressBar")
+        .style.width =
+        percentage + "%";
+
+
+    document
+        .getElementById("progressText")
+        .textContent =
+        percentage + "%";
+
+
+    /*
+       Highlight categories
+
+       GREEN = every word inside is correct
+       RED   = at least one word is wrong
+    */
+
+    categories.forEach(category => {
+
+        const words =
+            category.querySelectorAll(".placed-word");
+
+
+        let categoryCorrect = true;
+
+
+        words.forEach(word => {
+
+            if (
+                word.dataset.category !==
+                category.dataset.category
+            ) {
+
+                categoryCorrect = false;
+
+            }
+
+        });
+
+
+        if (categoryCorrect) {
+
+            category.classList.add("correct");
+
+        } else {
+
+            category.classList.add("wrong");
+
+        }
+
+    });
+
+
+    /*
+       Show result
+    */
+
+    if (score === totalWords) {
+
+        document
+            .getElementById("message")
+            .textContent =
+            "✓ PERFECT! ALL ANSWERS ARE CORRECT.";
+
+
+        document
+            .getElementById("finalScore")
+            .textContent =
+            score + "/" + totalWords;
+
+
+        setTimeout(function() {
+
+            document
+                .getElementById("complete")
+                .style.display = "flex";
+
+        }, 1000);
+
+    } else {
+
+        document
+            .getElementById("message")
+            .textContent =
+            "CHECK COMPLETE — SCORE: " +
+            score +
+            "/" +
+            totalWords;
+
+    }
+
+}
 
 
 /* =========================================================
